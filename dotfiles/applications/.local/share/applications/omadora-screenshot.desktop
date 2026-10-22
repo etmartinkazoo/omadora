@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Screenshot
+GenericName=Screenshot Tool
+Comment=Capture area, window, or screen and copy or save
+Exec=qs ipc call screenshot open
+Icon=applets-screenshooter
+Terminal=false
+Categories=Utility;
+Keywords=screenshot;capture;screen;area;window;grim;slurp;
