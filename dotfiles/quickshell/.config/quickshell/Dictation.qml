@@ -3,7 +3,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
 
-// Pill shown while fedcandor-dictate listens or transcribes. It never takes
+// Pill shown while omadora-dictate listens or transcribes. It never takes
 // keyboard focus: the words are typed into whatever window had it.
 Scope {
     id: dictation
@@ -14,7 +14,7 @@ Scope {
     property real startedAt: 0
     property real now: Date.now()
 
-    // Microphone level, newest last (fedcandor-dictate writes it ~20×/s).
+    // Microphone level, newest last (omadora-dictate writes it ~20×/s).
     property var levels: []
     readonly property int bars: 14
 
@@ -56,7 +56,7 @@ Scope {
 
     FileView {
         id: levelFile
-        path: (Quickshell.env("XDG_RUNTIME_DIR") || "/tmp") + "/fedcandor-dictate/level"
+        path: (Quickshell.env("XDG_RUNTIME_DIR") || "/tmp") + "/omadora-dictate/level"
         printErrors: false
         onLoaded: {
             const v = parseFloat(text());
@@ -169,7 +169,7 @@ Scope {
                         dictation.stage = "idle";
                         settingsWindow.open();
                     } else {
-                        Quickshell.execDetached([Quickshell.env("HOME") + "/.local/bin/fedcandor-dictate", "toggle"]);
+                        Quickshell.execDetached([Quickshell.env("HOME") + "/.local/bin/omadora-dictate", "toggle"]);
                     }
                 }
             }

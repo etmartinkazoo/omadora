@@ -3,6 +3,6 @@
 # templates or themes. Skip once with: git commit --no-verify
 set -euo pipefail
 if git diff --cached --name-only | grep -qE '^(dotfiles/|templates/|themes/|steps/|firefox/)'; then
-    echo "fedcandor: checking the desktop (tests/check.sh --quick)..."
+    echo "omadora: checking the desktop (tests/check.sh --quick)..."
     exec "$(git rev-parse --show-toplevel)/tests/check.sh" --quick
 fi

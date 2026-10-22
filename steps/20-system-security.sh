@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # [root] Baseline hardening: automatic security updates, firewall, status checks.
 #
-#   FEDCANDOR_KEEP_SSH=1    keep the ssh service open in the firewall
+#   OMADORA_KEEP_SSH=1    keep the ssh service open in the firewall
 set -euo pipefail
 source "$(dirname "$0")/../lib/common.sh"
 
@@ -21,11 +21,11 @@ else
         as_root dnf install -y dnf5-plugin-automatic
     fi
     info "Configuring automatic *security* updates (/etc/dnf/automatic.conf)"
-    if [ -f /etc/dnf/automatic.conf ] && ! grep -q 'fedcandor' /etc/dnf/automatic.conf; then
+    if [ -f /etc/dnf/automatic.conf ] && ! grep -q 'omadora' /etc/dnf/automatic.conf; then
         as_root cp /etc/dnf/automatic.conf "/etc/dnf/automatic.conf.bak-$(date +%Y%m%d%H%M%S)"
     fi
     as_root tee /etc/dnf/automatic.conf >/dev/null <<'CONF'
-# Managed by fedcandor (steps/20-system-security.sh).
+# Managed by omadora (steps/20-system-security.sh).
 # Security updates only, applied automatically; never reboots on its own.
 [commands]
 upgrade_type = security
@@ -48,9 +48,9 @@ fi
 if command -v firewall-cmd >/dev/null 2>&1; then
     as_root systemctl enable --now firewalld
     zone=$(as_root firewall-cmd --get-default-zone)
-    if [ "${FEDCANDOR_KEEP_SSH:-0}" != 1 ] && ! systemctl is-enabled --quiet sshd 2>/dev/null \
+    if [ "${OMADORA_KEEP_SSH:-0}" != 1 ] && ! systemctl is-enabled --quiet sshd 2>/dev/null \
         && as_root firewall-cmd --zone="$zone" --query-service=ssh >/dev/null 2>&1; then
-        info "Closing ssh in firewall zone '$zone' (sshd isn't enabled; FEDCANDOR_KEEP_SSH=1 to keep it)"
+        info "Closing ssh in firewall zone '$zone' (sshd isn't enabled; OMADORA_KEEP_SSH=1 to keep it)"
         as_root firewall-cmd --permanent --zone="$zone" --remove-service=ssh >/dev/null
         as_root firewall-cmd --reload >/dev/null
     fi

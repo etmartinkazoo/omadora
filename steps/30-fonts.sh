@@ -6,8 +6,8 @@ source "$(dirname "$0")/../lib/common.sh"
 VERSION="v3.5.1"
 SHA256="3f2d36e4fa8b3af2f97b14b57c5b0f57f4c1bda5a59533fb913a9ff3344db7ce"
 URL="https://github.com/ryanoasis/nerd-fonts/releases/download/${VERSION}/0xProto.tar.xz"
-DEST="${FEDCANDOR_FONT_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/fonts/0xProto}"
-STAMP="$DEST/.fedcandor-version"
+DEST="${OMADORA_FONT_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/fonts/0xProto}"
+STAMP="$DEST/.omadora-version"
 
 if [ -f "$STAMP" ] && [ "$(cat "$STAMP")" = "$VERSION" ]; then
     ok "0xProto Nerd Font $VERSION already installed"

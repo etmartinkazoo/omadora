@@ -1,5 +1,5 @@
 ---
-// The fedcandor mark: a sway tiling layout (one tall window, two stacked)
+// The omadora mark: a sway tiling layout (one tall window, two stacked)
 // where one tile carries a four-point spark: candor, Latin for radiance.
 interface Props {
 	size?: number;
@@ -10,7 +10,7 @@ const id = `fc${Math.random().toString(36).slice(2, 7)}`;
 ---
 
 <span class="logo">
-	<svg width={size} height={size} viewBox="0 0 64 64" aria-hidden={wordmark ? 'true' : undefined} role={wordmark ? undefined : 'img'} aria-label={wordmark ? undefined : 'fedcandor'}>
+	<svg width={size} height={size} viewBox="0 0 64 64" aria-hidden={wordmark ? 'true' : undefined} role={wordmark ? undefined : 'img'} aria-label={wordmark ? undefined : 'omadora'}>
 		<defs>
 			<linearGradient id={`${id}-bg`} x1="0" y1="0" x2="1" y2="1">
 				<stop offset="0" stop-color="#1a2a45"></stop>

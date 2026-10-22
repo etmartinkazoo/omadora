@@ -30,7 +30,7 @@ Check the keyboard layout and Caps Lock first. If the lock screen itself is brok
 
 On Atomic, boot the previous image: choose it in the boot menu, or run
 `rpm-ostree rollback && systemctl reboot`. Then please
-[open an issue](https://github.com/etmartinkazoo/fedcandor/issues).
+[open an issue](https://github.com/etmartinkazoo/omadora/issues).
 
 ## A Bluetooth device won't pair
 
@@ -53,6 +53,6 @@ Forget the network (select it and press <kbd>F</kbd>), then connect again. Netwo
 ```bash
 fc-list | grep -i 0xproto                         # the font is installed
 gsettings get org.gnome.desktop.interface icon-theme
-cd ~/fedcandor && ./install.sh fonts icons        # Workstation: reinstall them
-fedcandor-theme refresh                           # re-apply the theme everywhere
+cd ~/omadora && ./install.sh fonts icons        # Workstation: reinstall them
+omadora-theme refresh                           # re-apply the theme everywhere
 ```

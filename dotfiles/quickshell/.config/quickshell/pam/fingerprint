@@ -1,4 +1,4 @@
-# fedcandor lock screen, fingerprint only. The password goes through
+# omadora lock screen, fingerprint only. The password goes through
 # /etc/pam.d/swaylock as before; this stack runs alongside it, and only when
 # fprintd has fingers enrolled for the user.
 auth     required  pam_fprintd.so max-tries=3 timeout=30

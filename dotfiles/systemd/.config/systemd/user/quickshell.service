@@ -1,5 +1,5 @@
 [Unit]
-Description=Quickshell desktop shell (fedcandor)
+Description=Quickshell desktop shell (omadora)
 Documentation=https://quickshell.org
 PartOf=graphical-session.target
 After=graphical-session.target

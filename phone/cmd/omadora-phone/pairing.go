@@ -1,6 +1,6 @@
 package main
 
-// Google account pairing, shared by `fedcandor-phone pair` and the panel's
+// Google account pairing, shared by `omadora-phone pair` and the panel's
 // "Set up phone" flow (the daemon's pairMessages command). The Firefox profile
 // and account used last time are remembered, so setup needs no options.
 

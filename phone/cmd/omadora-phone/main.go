@@ -1,18 +1,18 @@
-// fedcandor-phone: texts (SMS + RCS) through Google Messages' web protocol.
+// omadora-phone: texts (SMS + RCS) through Google Messages' web protocol.
 //
-//	fedcandor-phone setup             pair texts (if needed), then open the panel's setup for calls
-//	fedcandor-phone pair [--profile NAME] [--account EMAIL]
+//	omadora-phone setup             pair texts (if needed), then open the panel's setup for calls
+//	omadora-phone pair [--profile NAME] [--account EMAIL]
 //	                                  pair through the Google account signed in to Firefox
 //	                                  (NAME: a Firefox profile; EMAIL: refuse any other account;
 //	                                  both are remembered for next time)
-//	fedcandor-phone pair --qr         pair by QR code, where Google still offers it
-//	fedcandor-phone whoami [--profile NAME]
+//	omadora-phone pair --qr         pair by QR code, where Google still offers it
+//	omadora-phone whoami [--profile NAME]
 //	                                  which Google account that profile would pair as
-//	fedcandor-phone daemon            serve the Quickshell panel (see PROTOCOL.md)
-//	fedcandor-phone list              recent conversations
-//	fedcandor-phone messages CONV_ID  recent messages in a conversation
-//	fedcandor-phone send CONV_ID TEXT send a text
-//	fedcandor-phone watch             print events as they arrive
+//	omadora-phone daemon            serve the Quickshell panel (see PROTOCOL.md)
+//	omadora-phone list              recent conversations
+//	omadora-phone messages CONV_ID  recent messages in a conversation
+//	omadora-phone send CONV_ID TEXT send a text
+//	omadora-phone watch             print events as they arrive
 //
 // list, messages and send go through the daemon when it's running.
 package main
@@ -45,7 +45,7 @@ func stateDir() string {
 		home, _ := os.UserHomeDir()
 		base = filepath.Join(home, ".local/state")
 	}
-	return filepath.Join(base, "fedcandor/phone")
+	return filepath.Join(base, "omadora/phone")
 }
 
 func sessionPath() string { return filepath.Join(stateDir(), "session.json") }
@@ -68,7 +68,7 @@ func saveSession(ad *libgm.AuthData) error {
 func loadSession() (*libgm.AuthData, error) {
 	data, err := os.ReadFile(sessionPath())
 	if err != nil {
-		return nil, fmt.Errorf("not paired (run: fedcandor-phone pair): %w", err)
+		return nil, fmt.Errorf("not paired (run: omadora-phone pair): %w", err)
 	}
 	ad := libgm.NewAuthData()
 	return ad, json.Unmarshal(data, ad)
@@ -76,14 +76,14 @@ func loadSession() (*libgm.AuthData, error) {
 
 func logger() zerolog.Logger {
 	level := zerolog.WarnLevel
-	if os.Getenv("FEDCANDOR_PHONE_DEBUG") != "" {
+	if os.Getenv("OMADORA_PHONE_DEBUG") != "" {
 		level = zerolog.DebugLevel
 	}
 	return zerolog.New(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.TimeOnly}).Level(level).With().Timestamp().Logger()
 }
 
 func die(format string, a ...any) {
-	fmt.Fprintf(os.Stderr, "fedcandor-phone: "+format+"\n", a...)
+	fmt.Fprintf(os.Stderr, "omadora-phone: "+format+"\n", a...)
 	os.Exit(1)
 }
 
@@ -137,7 +137,7 @@ func main() {
 		}
 	case "watch":
 		if dialDaemon() != nil {
-			die("the daemon is running; stop it first (systemctl --user stop fedcandor-phone)")
+			die("the daemon is running; stop it first (systemctl --user stop omadora-phone)")
 		}
 		err = withClient(ctx, printEvent, func(ctx context.Context, c *libgm.Client) error {
 			fmt.Println("watching; ^C to stop")
@@ -195,7 +195,7 @@ func pairGoogle(ctx context.Context, profileName, account string, checkOnly bool
 		fmt.Printf("Pairing as %s (Firefox profile %s)\n", email, profile)
 	}, func(emoji string) {
 		fmt.Printf("\n    On the phone, tap   %s\n\n", emoji)
-		_ = exec.Command("notify-send", "-a", "fedcandor-phone", "-u", "critical",
+		_ = exec.Command("notify-send", "-a", "omadora-phone", "-u", "critical",
 			"Pair your phone", "In Google Messages on the phone, tap "+emoji).Start()
 	})
 	if err != nil {
@@ -220,9 +220,9 @@ func pairQR(ctx context.Context) error {
 	}
 	defer cli.Disconnect()
 
-	png := filepath.Join(os.TempDir(), fmt.Sprintf("fedcandor-phone-qr-%d.png", os.Getpid()))
+	png := filepath.Join(os.TempDir(), fmt.Sprintf("omadora-phone-qr-%d.png", os.Getpid()))
 	if dir := os.Getenv("XDG_RUNTIME_DIR"); dir != "" {
-		png = filepath.Join(dir, "fedcandor-phone-qr.png")
+		png = filepath.Join(dir, "omadora-phone-qr.png")
 	}
 	defer os.Remove(png)
 	// A fresh viewer per code: imv caches an image it already has open, so
@@ -240,7 +240,7 @@ func pairQR(ctx context.Context) error {
 			return err
 		}
 		closeViewer()
-		viewer = exec.Command("imv", "-w", "fedcandor-phone pairing", png)
+		viewer = exec.Command("imv", "-w", "omadora-phone pairing", png)
 		if err := viewer.Start(); err != nil {
 			viewer = nil
 			fmt.Println("couldn't open imv; open this image yourself:", png)
@@ -297,7 +297,7 @@ func withClient(ctx context.Context, handler func(any), fn func(context.Context,
 			}
 		case *events.AuthTokenRefreshed:
 			if err := saveSession(cli.AuthData); err != nil {
-				fmt.Fprintln(os.Stderr, "fedcandor-phone: save session:", err)
+				fmt.Fprintln(os.Stderr, "omadora-phone: save session:", err)
 			}
 		}
 		if handler != nil {
@@ -305,7 +305,7 @@ func withClient(ctx context.Context, handler func(any), fn func(context.Context,
 		}
 	})
 	if err := cli.FetchConfig(ctx); err != nil {
-		fmt.Fprintln(os.Stderr, "fedcandor-phone: fetch config:", err)
+		fmt.Fprintln(os.Stderr, "omadora-phone: fetch config:", err)
 	}
 	if err := cli.Connect(ctx); err != nil {
 		return fmt.Errorf("connect: %w", err)
@@ -314,7 +314,7 @@ func withClient(ctx context.Context, handler func(any), fn func(context.Context,
 	select {
 	case <-ready:
 	case <-time.After(20 * time.Second):
-		fmt.Fprintln(os.Stderr, "fedcandor-phone: no settings from the phone after 20s; trying anyway")
+		fmt.Fprintln(os.Stderr, "omadora-phone: no settings from the phone after 20s; trying anyway")
 	case <-ctx.Done():
 		return ctx.Err()
 	}

@@ -1,4 +1,4 @@
-# Packages fedcandor needs on Fedora (Workstation/Server/Everything installs).
+# Packages omadora needs on Fedora (Workstation/Server/Everything installs).
 # On Fedora Atomic these are baked into the image instead (see atomic/).
 
 # Compositor & session
@@ -18,7 +18,7 @@ python3-dbus             # Bluetooth agent
 python3-gobject          # Bluetooth agent
 
 # Desktop tools used by the Quickshell plugins
-kitty                    # default terminal (themed live by fedcandor-theme)
+kitty                    # default terminal (themed live by omadora-theme)
 grim
 slurp
 jq
@@ -71,6 +71,6 @@ network-manager-applet
 system-config-printer
 fprintd-pam              # fingerprint for the lock screen and admin prompts
 
-# fedcandor-migrate
+# omadora-migrate
 rsync
 openssh-clients

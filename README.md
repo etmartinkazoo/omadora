@@ -1,11 +1,14 @@
-<p align="center"><img src="site/public/logo.svg" width="96" alt="fedcandor logo"></p>
+<p align="center"><img src="site/public/logo.svg" width="96" alt="omadora logo"></p>
 
-# fedcandor
+# omadora
 
 **Stable. Secure. Beautiful. No compromises.** A desktop for people who want to get things done:
+
+*Formerly **fedcandor**. Existing installs move over by themselves: re-run `./install.sh`
+(regular Fedora), or just update (Atomic) — see [Renamed from fedcandor](#renamed-from-fedcandor).*
 Fedora Atomic for stability and security, sway for productivity, and Quickshell for beauty.
 
-**Website & docs: <https://etmartinkazoo.github.io/fedcandor/>**
+**Website & docs: <https://etmartinkazoo.github.io/omadora/>**
 
 - **Fedora** with fixed releases, SELinux enforcing, LUKS and firewalld, instead of a rolling distro.
 - **sway**: a mature, i3-compatible compositor that changes slowly.
@@ -18,8 +21,8 @@ Fedora Atomic for stability and security, sway for productivity, and Quickshell 
 ## Install (Fedora Workstation, Server or Everything)
 
 ```bash
-git clone https://github.com/etmartinkazoo/fedcandor ~/fedcandor
-cd ~/fedcandor
+git clone https://github.com/etmartinkazoo/omadora ~/omadora
+cd ~/omadora
 ./install.sh
 ```
 
@@ -27,10 +30,10 @@ cd ~/fedcandor
 |-------------------|---------|--------------|
 | `system-packages` | sudo    | `dnf install` everything in `packages/fedora.txt` and `packages/build.txt` |
 | `system-security` | sudo    | automatic security updates, closes unused ssh in the firewall, reports SELinux/Secure Boot/LUKS status |
-| `firefox`         | sudo    | installs the fedcandor Theme extension system-wide (the one place Fedora's Firefox runs an unsigned add-on), so Firefox follows theme switches live |
+| `firefox`         | sudo    | installs the omadora Theme extension system-wide (the one place Fedora's Firefox runs an unsigned add-on), so Firefox follows theme switches live |
 | `fonts`           | user    | 0xProto Nerd Font from its GitHub release (pinned version, SHA-256 verified) |
 | `icons`           | user    | Tela icon theme from its GitHub release (pinned version, SHA-256 verified) |
-| `dotfiles`        | user    | links `dotfiles/*` into `$HOME` with GNU stow (`--no-folding`); anything in the way goes to `~/.local/state/fedcandor/backup-*` |
+| `dotfiles`        | user    | links `dotfiles/*` into `$HOME` with GNU stow (`--no-folding`); anything in the way goes to `~/.local/state/omadora/backup-*` |
 | `session`         | user    | enables `quickshell.service`, reloads sway |
 
 `./install.sh --list` shows the steps. `./install.sh fonts icons` runs just those, and
@@ -39,21 +42,21 @@ cd ~/fedcandor
 For **Fedora Atomic** (one command on a fresh install), see [atomic/README.md](atomic/README.md):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/etmartinkazoo/fedcandor/main/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/etmartinkazoo/omadora/main/bootstrap.sh | bash
 ```
 
 ## Layout
 
 ```
 install.sh           entry point
-bootstrap.sh         fresh Fedora Atomic -> fedcandor (rebase onto the image, clone the repo)
+bootstrap.sh         fresh Fedora Atomic -> omadora (rebase onto the image, clone the repo)
 lib/common.sh        shared helpers (logging, verified downloads)
 steps/NN-*.sh        install steps, run in order
 themes/              built-in themes (Omarchy-compatible colors.toml + wallpapers)
 templates/           theme templates: rendered for Quickshell, sway, foot, GTK, Firefox
 firefox/             Firefox theme extension + its native messaging host (live theme switching)
 packages/fedora.txt  dnf package list (also used by the Atomic image)
-packages/build.txt   build tools for fedcandor-phone and whisper.cpp (not in the image)
+packages/build.txt   build tools for omadora-phone and whisper.cpp (not in the image)
 dotfiles/<pkg>/      stow packages: sway, quickshell, foot, swappy, autostart, systemd, bin
 atomic/              bootc image: Containerfile, build script, first-login setup
 site/                website and docs (Astro); deployed to GitHub Pages
@@ -64,13 +67,13 @@ site/                website and docs (Astro); deployed to GitHub Pages
 - **Per-machine sway settings** (wallpaper, keyboard options, output scaling) go in
   `~/.config/sway/config.d/80-local.conf`. It isn't tracked; `install.sh` creates a template.
 - **Themes**: seven built in (`themes/`), plus any [Omarchy](https://github.com/omacom/omarchy)
-  theme via `fedcandor-theme install omarchy:<name>`. Switch with <kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>T</kbd>
-  or `fedcandor-theme set <name>`. See [themes/README.md](themes/README.md).
+  theme via `omadora-theme install omarchy:<name>`. Switch with <kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>T</kbd>
+  or `omadora-theme set <name>`. See [themes/README.md](themes/README.md).
 - **Generated files** aren't tracked: `sway/config.d/99-theme.conf`, `foot/theme.ini`,
-  `gtk-*/settings.ini`, `kitty/theme.conf`, `nvim/colors/fedcandor.lua` and Firefox's
-  `chrome/userChrome.css` are rendered from `templates/` by `fedcandor-theme` on every theme
+  `gtk-*/settings.ini`, `kitty/theme.conf`, `nvim/colors/omadora.lua` and Firefox's
+  `chrome/userChrome.css` are rendered from `templates/` by `omadora-theme` on every theme
   change, and applied live (kitty and Neovim included). Firefox's colors come from
-  `~/.local/state/fedcandor/theme/rendered/firefox-theme.json`, streamed to the fedcandor Theme
+  `~/.local/state/omadora/theme/rendered/firefox-theme.json`, streamed to the omadora Theme
   extension, and tern follows `rendered/colors.toml` there.
 - **Everything else** is a symlink into this repo: edit it here, then commit.
 
@@ -78,7 +81,7 @@ site/                website and docs (Astro); deployed to GitHub Pages
 
 - Quickshell runs as a systemd user service and restarts if it crashes.
   Logs: `journalctl --user -u quickshell -f`
-- Lock: `loginctl lock-session` (or Super+Shift+E → L). `fedcandor-lock` waits until the lock
+- Lock: `loginctl lock-session` (or Super+Shift+E → L). `omadora-lock` waits until the lock
   is confirmed before allowing suspend, and falls back to swaylock.
 - IPC: `qs ipc show` lists everything you can bind, e.g. `qs ipc call launcher toggle`.
 
@@ -97,3 +100,12 @@ each commit that touches the desktop.
   and the adapter is only pairable while the menu is open.
 - Clipboard history (cliphist) is capped at 200 entries, and skips entries that password managers mark sensitive.
 - Apps launched from the shell run in their own systemd scopes, so a shell restart never takes them down.
+
+## Renamed from fedcandor
+
+omadora used to be called fedcandor. The `rename` install step (`steps/05-rename.sh`) moves an
+existing install over once: `~/.local/state`, `~/.config`, `~/.local/share` and `~/.cache`
+folders, the `~/fedcandor` checkout (to `~/omadora`, with its `origin` updated), the dotfile
+links, the phone service, and nvim's colorscheme name. On Atomic, `omadora-rename-image.service`
+rebases machines still on `ghcr.io/etmartinkazoo/fedcandor` onto `.../omadora`; CI keeps
+publishing the old name until they've moved.

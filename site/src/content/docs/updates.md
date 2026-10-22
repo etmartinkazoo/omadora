@@ -1,6 +1,6 @@
 ---
 title: Updates & rollback
-description: How fedcandor stays current without ever leaving you with a broken machine.
+description: How omadora stays current without ever leaving you with a broken machine.
 section: Running it
 order: 2
 ---
@@ -12,7 +12,7 @@ running one, that becomes active the next time you reboot. The update either app
 not at all, and the previous image stays installed.
 
 - **Automatic:** `rpm-ostreed-automatic.timer` stages new images in the background.
-- **Daily builds:** CI rebuilds fedcandor every day on Fedora's latest base, so security fixes arrive promptly.
+- **Daily builds:** CI rebuilds omadora every day on Fedora's latest base, so security fixes arrive promptly.
 - **Never a surprise reboot:** a staged update waits until you choose to restart.
 
 | Task | Command |
@@ -27,15 +27,15 @@ not at all, and the previous image stays installed.
 
 | Tag | Follows |
 |-----|---------|
-| `:latest` | The newest Fedora release fedcandor supports |
+| `:latest` | The newest Fedora release omadora supports |
 | `:45` | Fedora 45 only. Upgrade to the next release deliberately. |
 | `:45-YYYYMMDD` | One exact build. Useful for testing or fleet pinning (see [For teams](../teams/)). |
 
-Switch channels with `rpm-ostree rebase ostree-image-signed:docker://ghcr.io/etmartinkazoo/fedcandor:<tag>`.
+Switch channels with `rpm-ostree rebase ostree-image-signed:docker://ghcr.io/etmartinkazoo/omadora:<tag>`.
 
 ## On Fedora Workstation
 
 - Fedora updates through dnf as usual; **security updates install automatically**
   (`dnf5-automatic.timer`).
-- Update fedcandor itself with `cd ~/fedcandor && git pull && ./install.sh`.
-- Your previous dotfiles are kept in `~/.local/state/fedcandor/backup-*` whenever the installer replaces something.
+- Update omadora itself with `cd ~/omadora && git pull && ./install.sh`.
+- Your previous dotfiles are kept in `~/.local/state/omadora/backup-*` whenever the installer replaces something.

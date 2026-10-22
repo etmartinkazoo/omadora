@@ -1,5 +1,5 @@
 #!/usr/bin/python3 -I
-"""fedcandor-chat: the side chat's bridge to opencode (Super+A).
+"""omadora-chat: the side chat's bridge to opencode (Super+A).
 
 The shell starts this and talks to it in JSON lines:
 
@@ -17,7 +17,7 @@ bridge rejects every request, so the model never runs commands or reads files.
 The free tier requires opencode's stock prompt and tool list, so tools can't
 simply be removed; rejecting them is what keeps it to talking.
 
-State: ~/.local/state/fedcandor/chat.json (session id and the transcript shown).
+State: ~/.local/state/omadora/chat.json (session id and the transcript shown).
 """
 
 import base64
@@ -31,10 +31,10 @@ import urllib.request
 from pathlib import Path
 
 HOME = Path.home()
-STATE = Path(os.environ.get("XDG_STATE_HOME") or HOME / ".local/state") / "fedcandor"
+STATE = Path(os.environ.get("XDG_STATE_HOME") or HOME / ".local/state") / "omadora"
 STATE_FILE = STATE / "chat.json"
-CHAT_DIR = Path(os.environ.get("XDG_DATA_HOME") or HOME / ".local/share") / "fedcandor/chat"
-MODEL = {"providerID": "opencode", "id": os.environ.get("FEDCANDOR_CHAT_MODEL", "deepseek-v4.1-flash-free")}
+CHAT_DIR = Path(os.environ.get("XDG_DATA_HOME") or HOME / ".local/share") / "omadora/chat"
+MODEL = {"providerID": "opencode", "id": os.environ.get("OMADORA_CHAT_MODEL", "deepseek-v4.1-flash-free")}
 NO_TOOLS = "Tools are off in this chat: answer from the conversation, or ask the user to paste what you need."
 
 out_lock = threading.Lock()
@@ -113,7 +113,7 @@ class Chat:
         if not conf.exists():
             conf.write_text('{\n  "$schema": "https://opencode.ai/config.json",\n  "permission": { "*": "ask" }\n}\n')
         s = self.service.request("POST", "/api/session", {
-            "title": "fedcandor chat",
+            "title": "omadora chat",
             "location": {"directory": str(CHAT_DIR)},
             "model": MODEL,
             "permissions": [{"action": "*", "resource": "*", "effect": "ask"}],

@@ -9,7 +9,7 @@ import Quickshell.Wayland
 // Side chat (Super+A): a persistent conversation for ideas, plans, writing.
 // A sheet on the left, the same size as the phone sheet on the right.
 //
-// Under the hood: fedcandor-chat, a bridge to the opencode service with the
+// Under the hood: omadora-chat, a bridge to the opencode service with the
 // free DeepSeek model. It's conversation only: every tool request is
 // rejected, so the model never runs commands or reads files.
 //
@@ -79,7 +79,7 @@ Scope {
     // ---- The bridge ----
     Process {
         id: bridge
-        command: [Quickshell.env("HOME") + "/.local/bin/fedcandor-chat"]
+        command: [Quickshell.env("HOME") + "/.local/bin/omadora-chat"]
         running: true
         stdinEnabled: true
         stdout: SplitParser {
@@ -203,7 +203,7 @@ Scope {
             exclusionMode: ExclusionMode.Ignore
             WlrLayershell.layer: WlrLayer.Overlay
             WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
-            WlrLayershell.namespace: "fedcandor-pointer-probe"
+            WlrLayershell.namespace: "omadora-pointer-probe"
 
             MouseArea {
                 anchors.fill: parent
@@ -277,7 +277,7 @@ Scope {
         exclusionMode: ExclusionMode.Ignore
         WlrLayershell.layer: WlrLayer.Overlay
         WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
-        WlrLayershell.namespace: "fedcandor-chat-chip"
+        WlrLayershell.namespace: "omadora-chat-chip"
 
         Timer {
             id: chipHide

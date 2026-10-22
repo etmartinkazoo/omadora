@@ -1,11 +1,11 @@
 ---
 title: Install on Fedora Atomic
-description: The recommended setup. Rebase a Fedora Atomic install onto the fedcandor image.
+description: The recommended setup. Rebase a Fedora Atomic install onto the omadora image.
 section: Start here
 order: 2
 ---
 
-On Fedora Atomic, fedcandor ships as a **bootable container image**: the operating system, the
+On Fedora Atomic, omadora ships as a **bootable container image**: the operating system, the
 desktop, fonts, icons and security defaults, all built and tested together. Your machine runs
 exactly that image, and updates replace it as a whole.
 
@@ -20,21 +20,21 @@ and install it as usual.
 Any Fedora Atomic edition (Silverblue, Kinoite, and so on) works as a starting point, since the
 rebase replaces the OS image.
 
-## 2. Rebase to fedcandor
+## 2. Rebase to omadora
 
 The first rebase fetches the image, including the key that verifies future updates. The second
 switches to signature-verified updates, so from then on your machine only accepts images signed
-by the fedcandor project.
+by the omadora project.
 
 ```bash
-rpm-ostree rebase ostree-unverified-registry:ghcr.io/etmartinkazoo/fedcandor:latest
+rpm-ostree rebase ostree-unverified-registry:ghcr.io/etmartinkazoo/omadora:latest
 systemctl reboot
 ```
 
 After the reboot:
 
 ```bash
-rpm-ostree rebase ostree-image-signed:docker://ghcr.io/etmartinkazoo/fedcandor:latest
+rpm-ostree rebase ostree-image-signed:docker://ghcr.io/etmartinkazoo/omadora:latest
 systemctl reboot
 ```
 
@@ -43,14 +43,14 @@ instead of `:latest`.
 
 ## 3. Log in
 
-Choose the **Sway** session at the login screen. On first login, `fedcandor-setup.service` links
+Choose the **Sway** session at the login screen. On first login, `omadora-setup.service` links
 the desktop configuration into your home directory, and the shell starts. Press <kbd>Super</kbd>+<kbd>/</kbd>
 for the keybinding cheatsheet, or continue with [First steps](../first-steps/).
 
 ## Check that it worked
 
 ```bash
-rpm-ostree status          # the booted image should be ghcr.io/etmartinkazoo/fedcandor
+rpm-ostree status          # the booted image should be ghcr.io/etmartinkazoo/omadora
 systemctl --user status quickshell
 ```
 

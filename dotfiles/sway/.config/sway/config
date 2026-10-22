@@ -17,7 +17,7 @@ set $menu qs ipc call launcher open
 # The wallpaper is drawn by the shell and follows the theme, so sway's own
 # swaybg is disabled: an `output * bg` line would cover the theme wallpaper
 # after every sway reload. To use your own image with every theme:
-#   fedcandor-theme wallpaper ~/Pictures/wallpaper.jpg
+#   omadora-theme wallpaper ~/Pictures/wallpaper.jpg
 swaybg_command -
 #
 # Example configuration:
@@ -29,15 +29,15 @@ swaybg_command -
 ### Idle configuration
 #
 # Example configuration:
-# Locking goes through fedcandor-lock: Quickshell's lock screen, waiting until
+# Locking goes through omadora-lock: Quickshell's lock screen, waiting until
 # the lock is confirmed (so suspend can't race it), with swaylock as fallback.
 # `loginctl lock-session` triggers the same path. Fedora's 90-swayidle.conf is
 # disabled in config.d.
 exec swayidle -w \
   timeout 300 'loginctl lock-session' \
   timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-  before-sleep '~/.local/bin/fedcandor-lock' \
-  lock '~/.local/bin/fedcandor-lock'
+  before-sleep '~/.local/bin/omadora-lock' \
+  lock '~/.local/bin/omadora-lock'
 #
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
@@ -64,7 +64,7 @@ input "type:touchpad" {
 #
 # Each "## Section" heading groups the bindings below it in the keybinds overlay
 # (Super+. or Super+/). A "#" comment above a group of bindings describes them;
-# without one, the sway command describes itself. fedcandor keeps vim-style
+# without one, the sway command describes itself. omadora keeps vim-style
 # H/J/K/L movement; where a key is free, bindings follow Omarchy's, so Omarchy
 # muscle memory carries over.
 
@@ -107,11 +107,11 @@ input "type:touchpad" {
     bindsym $mod+p exec qs ipc call phone toggle
 
     # Dictation: hold to talk, or tap to start and tap again to stop
-    bindsym --no-repeat $mod+Shift+d exec ~/.local/bin/fedcandor-dictate press
-    bindsym --release $mod+Shift+d exec ~/.local/bin/fedcandor-dictate release
+    bindsym --no-repeat $mod+Shift+d exec ~/.local/bin/omadora-dictate press
+    bindsym --release $mod+Shift+d exec ~/.local/bin/omadora-dictate release
     # Dictation on the Copilot key (Shift+Super+F23)
-    bindsym --no-repeat $mod+Shift+F23 exec ~/.local/bin/fedcandor-dictate press
-    bindsym --release $mod+Shift+F23 exec ~/.local/bin/fedcandor-dictate release
+    bindsym --no-repeat $mod+Shift+F23 exec ~/.local/bin/omadora-dictate press
+    bindsym --release $mod+Shift+F23 exec ~/.local/bin/omadora-dictate release
 
     # Notification center
     bindsym $mod+n exec qs ipc call notifications toggle
@@ -130,7 +130,7 @@ input "type:touchpad" {
     bindsym $mod+Ctrl+space exec qs ipc call theme bgNext
 
     # Next desktop mode (tiling / Windows / macOS)
-    bindsym $mod+Ctrl+m exec ~/.local/bin/fedcandor-mode next
+    bindsym $mod+Ctrl+m exec ~/.local/bin/omadora-mode next
 
     # Audio
     bindsym $mod+Ctrl+a exec qs ipc call audio toggle

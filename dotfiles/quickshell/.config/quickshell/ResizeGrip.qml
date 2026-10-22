@@ -41,7 +41,7 @@ PanelWindow {
     exclusionMode: ExclusionMode.Ignore
     WlrLayershell.layer: WlrLayer.Top
     WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
-    WlrLayershell.namespace: "fedcandor-resize"
+    WlrLayershell.namespace: "omadora-resize"
 
     MouseArea {
         id: area

@@ -1,13 +1,13 @@
 [Unit]
-Description=fedcandor: link the image's dotfiles into the user session
-Documentation=file:///usr/share/fedcandor/atomic/README.md
+Description=omadora: link the image's dotfiles into the user session
+Documentation=file:///usr/share/omadora/atomic/README.md
 # Runs before Quickshell so its config is in place on the very first login.
 Before=quickshell.service
 PartOf=graphical-session.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/share/fedcandor/atomic/user-setup.sh
+ExecStart=/usr/share/omadora/atomic/user-setup.sh
 
 [Install]
 WantedBy=sway-session.target

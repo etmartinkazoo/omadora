@@ -339,7 +339,7 @@ Scope {
             }
 
             Hint {
-                text: "←→↑↓ select • Enter apply • B / Shift+B wallpaper • more: fedcandor-theme install omarchy:<name>"
+                text: "←→↑↓ select • Enter apply • B / Shift+B wallpaper • more: omadora-theme install omarchy:<name>"
             }
         }
     }

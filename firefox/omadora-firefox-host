@@ -1,9 +1,9 @@
 #!/usr/bin/python3 -I
-"""Native messaging host for the fedcandor Theme Firefox extension.
+"""Native messaging host for the omadora Theme Firefox extension.
 
 Firefox starts this when the extension connects. It sends the current theme's
 rendered firefox-theme.json, then watches the file and sends it again whenever
-fedcandor-theme replaces it. It exits when Firefox closes its stdin.
+omadora-theme replaces it. It exits when Firefox closes its stdin.
 
 Only that one file is ever read, and nothing sent by the browser is acted on.
 """
@@ -17,7 +17,7 @@ import time
 from pathlib import Path
 
 STATE = Path(os.environ.get("XDG_STATE_HOME") or Path.home() / ".local/state")
-THEME = STATE / "fedcandor/theme/rendered/firefox-theme.json"
+THEME = STATE / "omadora/theme/rendered/firefox-theme.json"
 MAX_MESSAGE = 1024 * 1024  # Firefox's limit for host -> extension messages
 
 

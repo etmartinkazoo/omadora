@@ -1,16 +1,16 @@
 #!/usr/bin/python3 -I
-"""fedcandor-displays: display arrangement and per-setup profiles.
+"""omadora-displays: display arrangement and per-setup profiles.
 
-    fedcandor-displays list              outputs as JSON (for the Displays panel)
-    fedcandor-displays apply JSON        set outputs: [{name, enabled, mode, scale, transform, x, y}]
-    fedcandor-displays save              remember the current arrangement for these screens
-    fedcandor-displays restore           re-apply the arrangement saved for the screens
+    omadora-displays list              outputs as JSON (for the Displays panel)
+    omadora-displays apply JSON        set outputs: [{name, enabled, mode, scale, transform, x, y}]
+    omadora-displays save              remember the current arrangement for these screens
+    omadora-displays restore           re-apply the arrangement saved for the screens
                                          connected now (the shell runs this on hotplug)
-    fedcandor-displays forget            drop the profile for the screens connected now
+    omadora-displays forget            drop the profile for the screens connected now
 
 A profile is keyed by which screens are connected (make, model, serial), so
 docking at your desk brings back your desk layout, and undocking brings back
-the laptop's. Profiles live in ~/.config/fedcandor/displays.json.
+the laptop's. Profiles live in ~/.config/omadora/displays.json.
 """
 
 import json
@@ -20,7 +20,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-CONFIG = Path(os.environ.get("XDG_CONFIG_HOME") or Path.home() / ".config") / "fedcandor"
+CONFIG = Path(os.environ.get("XDG_CONFIG_HOME") or Path.home() / ".config") / "omadora"
 PROFILES = CONFIG / "displays.json"
 NAME = re.compile(r"^[A-Za-z0-9_.-]+$")
 MODE = re.compile(r"^\d{2,5}x\d{2,5}(@\d+(\.\d+)?Hz)?$")
@@ -140,7 +140,7 @@ def main():
         try:
             sys.exit(apply(json.loads(args[1])))
         except (IndexError, ValueError, KeyError) as e:
-            sys.exit(f"fedcandor-displays: {e}")
+            sys.exit(f"omadora-displays: {e}")
     elif cmd == "save":
         outs = outputs()
         profiles = load_profiles()
@@ -174,7 +174,7 @@ def main():
     elif cmd in ("-h", "--help"):
         print(__doc__.strip())
     else:
-        sys.exit(f"fedcandor-displays: unknown command {cmd} (see --help)")
+        sys.exit(f"omadora-displays: unknown command {cmd} (see --help)")
 
 
 if __name__ == "__main__":

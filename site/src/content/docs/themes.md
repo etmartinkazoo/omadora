@@ -1,7 +1,7 @@
 ---
 title: Themes
 description: Seven built-in themes, live switching, and any Omarchy theme with one command.
-section: Using fedcandor
+section: Using omadora
 order: 3
 ---
 
@@ -12,16 +12,16 @@ One theme colors everything at once, live and without restarting anything:
 | Bar, popups, lock screen, wallpaper | instantly |
 | Window borders (sway) | instantly |
 | **kitty** (the default terminal) | instantly, in every open window |
-| **Neovim** | instantly in every running Neovim using the `fedcandor` colorscheme (full Tree-sitter/LSP highlighting via mini.nvim when installed) |
+| **Neovim** | instantly in every running Neovim using the `omadora` colorscheme (full Tree-sitter/LSP highlighting via mini.nvim when installed) |
 | foot | instantly, if you use it |
 | GTK apps and icons | light/dark and icon theme switch immediately |
-| Firefox | instantly: toolbar, tabs, menus, sidebar, new tab page and the light/dark preference web pages see (the fedcandor Theme extension, installed by the `firefox` step) |
+| Firefox | instantly: toolbar, tabs, menus, sidebar, new tab page and the light/dark preference web pages see (the omadora Theme extension, installed by the `firefox` step) |
 | tern | within a second |
 
 To make Neovim follow the theme, set the colorscheme in your `init.lua` (after your plugins load):
 
 ```lua
-vim.cmd.colorscheme("fedcandor")
+vim.cmd.colorscheme("omadora")
 ```
 
 ## Switching
@@ -33,19 +33,19 @@ bar), to open the picker. Arrow keys move, <kbd>Enter</kbd> applies (the picker 
 From a terminal:
 
 ```bash
-fedcandor-theme list
-fedcandor-theme set tokyo-night
-fedcandor-theme next
-fedcandor-theme bg-next
-fedcandor-theme bg-prev
-fedcandor-theme bg-set 2                       # third wallpaper of the current theme
+omadora-theme list
+omadora-theme set tokyo-night
+omadora-theme next
+omadora-theme bg-next
+omadora-theme bg-prev
+omadora-theme bg-set 2                       # third wallpaper of the current theme
 ```
 
 ## Built-in themes
 
 | Theme | Mode | Character |
 |-------|------|-----------|
-| **candor** | dark | fedcandor's own: deep navy, clear blue accent. The default. |
+| **candor** | dark | omadora's own: deep navy, clear blue accent. The default. |
 | **graphite** | dark | Quiet and neutral, near-black with soft grey accents. |
 | **candor-light** | light | candor for daytime: cool paper white, clear blue accent. |
 | **graphite-light** | light | graphite for bright rooms: soft off-white, neutral grey accents. |
@@ -58,19 +58,19 @@ so it's sharp at any resolution.
 
 ## More themes from Omarchy
 
-fedcandor uses the same palette format as [Omarchy](https://github.com/omacom/omarchy), so its
+omadora uses the same palette format as [Omarchy](https://github.com/omacom/omarchy), so its
 themes, and the community's, install directly:
 
 ```bash
-fedcandor-theme install omarchy:gruvbox        # any theme in Omarchy's repository
-fedcandor-theme install omarchy:nord
-fedcandor-theme install https://github.com/<user>/<omarchy-theme-repo>
-fedcandor-theme set gruvbox
+omadora-theme install omarchy:gruvbox        # any theme in Omarchy's repository
+omadora-theme install omarchy:nord
+omadora-theme install https://github.com/<user>/<omarchy-theme-repo>
+omadora-theme set gruvbox
 ```
 
 Omarchy ships, among others, everforest, gruvbox, kanagawa, matte-black, nord, osaka-jade,
 ristretto, rose-pine, catppuccin-latte and white. Installed themes live in
-`~/.local/share/fedcandor/themes/`; remove one with `fedcandor-theme remove <name>`.
+`~/.local/share/omadora/themes/`; remove one with `omadora-theme remove <name>`.
 
 > Imported themes are only used as data. Every color must be a plain hex value; anything else is
 > ignored, so a theme can't smuggle commands into your configuration.
@@ -78,8 +78,8 @@ ristretto, rose-pine, catppuccin-latte and white. Installed themes live in
 ## Your own wallpaper
 
 ```bash
-fedcandor-theme wallpaper ~/Pictures/my-wallpaper.jpg   # use it with every theme
-fedcandor-theme wallpaper --clear                       # back to the theme's wallpapers
+omadora-theme wallpaper ~/Pictures/my-wallpaper.jpg   # use it with every theme
+omadora-theme wallpaper --clear                       # back to the theme's wallpapers
 ```
 
 ## Making a theme
@@ -96,10 +96,10 @@ foreground = "#a9b1d6"
 ```
 
 Missing keys are derived from the ones you set. Put the folder in
-`~/.local/share/fedcandor/themes/<name>/`, or run `fedcandor-theme install ./my-theme`. The full
+`~/.local/share/omadora/themes/<name>/`, or run `omadora-theme install ./my-theme`. The full
 key list and the template syntax are in the
-[themes README](https://github.com/etmartinkazoo/fedcandor/tree/main/themes).
+[themes README](https://github.com/etmartinkazoo/omadora/tree/main/themes).
 
-To theme another app (for example Alacritty, Ghostty, btop or tmux), add a template to `~/.config/fedcandor/templates/`. Each `*.tpl` file
-there is rendered to `~/.local/state/fedcandor/theme/rendered/` on every theme change, using
+To theme another app (for example Alacritty, Ghostty, btop or tmux), add a template to `~/.config/omadora/templates/`. Each `*.tpl` file
+there is rendered to `~/.local/state/omadora/theme/rendered/` on every theme change, using
 tokens like `{{ accent }}`, `{{ background_strip }}` or `{{ mix background accent 30% }}`.

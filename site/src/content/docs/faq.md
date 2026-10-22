@@ -5,7 +5,7 @@ section: Reference
 order: 2
 ---
 
-## Is fedcandor a Linux distribution?
+## Is omadora a Linux distribution?
 
 No. It's a desktop built on Fedora. On Atomic, it's a Fedora Sway Atomic image with the desktop
 and security defaults built in. On Workstation, it's an installer for your existing Fedora. Fedora
@@ -14,7 +14,7 @@ remains the operating system, with Fedora's packages and Fedora's security team.
 ## How is this different from Omarchy and other "riced" setups?
 
 Most opinionated desktops are built on rolling-release distributions and fast-moving compositors:
-exciting, but they ask you to absorb breakage. fedcandor makes the opposite trade. It runs on
+exciting, but they ask you to absorb breakage. omadora makes the opposite trade. It runs on
 Fedora's fixed releases and an image-based OS that rolls back, with sway, whose configuration has
 stayed compatible for a decade. You get the polish without the maintenance.
 
@@ -44,7 +44,7 @@ isn't officially supported by sway and needs extra setup.
 
 ## Who maintains it, and what does it cost?
 
-It's developed in the open on [GitHub](https://github.com/etmartinkazoo/fedcandor), where issues and
+It's developed in the open on [GitHub](https://github.com/etmartinkazoo/omadora), where issues and
 pull requests are welcome.
 
 ## What does the name mean?

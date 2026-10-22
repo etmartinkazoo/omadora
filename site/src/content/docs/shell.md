@@ -1,7 +1,7 @@
 ---
 title: The shell
 description: Everything the Quickshell desktop shell does, feature by feature.
-section: Using fedcandor
+section: Using omadora
 order: 2
 ---
 
@@ -111,7 +111,7 @@ arrange them (they snap edge to edge), and pick each screen's resolution, scale 
 **Apply** asks "Keep these settings?" and reverts after 15 seconds unless you confirm, so a mode
 your screen can't show never strands you. Keeping saves the layout for that set of screens: plug
 the same screens in again (your desk, a projector) and the layout comes back by itself.
-`fedcandor-displays` does the same from a terminal.
+`omadora-displays` does the same from a terminal.
 
 ## Lock screen
 
@@ -130,7 +130,7 @@ locked even if the shell were to crash.
 ## Desktop modes
 
 The same shell comes in three layouts. Switch in Quick Settings (<kbd>M</kbd>), with
-<kbd>Super</kbd>+<kbd>Ctrl</kbd>+<kbd>M</kbd>, or with `fedcandor-mode set tiling|windows|macos`.
+<kbd>Super</kbd>+<kbd>Ctrl</kbd>+<kbd>M</kbd>, or with `omadora-mode set tiling|windows|macos`.
 
 | Mode | Bar | Windows |
 |------|-----|---------|

@@ -1,10 +1,10 @@
-# fedcandor: Fedora Sway Atomic + Quickshell as a bootable container image.
+# omadora: Fedora Sway Atomic + Quickshell as a bootable container image.
 #
-# Build:   podman build -f atomic/Containerfile -t fedcandor .
+# Build:   podman build -f atomic/Containerfile -t omadora .
 # Use:     see atomic/README.md (bootstrap.sh, or rpm-ostree rebase / bootc switch)
 ARG FEDORA_VERSION=45
 
-# ---- fedcandor-phone (pure Go: a static binary, no toolchain in the image) ----
+# ---- omadora-phone (pure Go: a static binary, no toolchain in the image) ----
 # Keep GO_VERSION in step with the `go` line in phone/go.mod.
 ARG GO_VERSION=1.27.2
 FROM docker.io/library/golang:${GO_VERSION} AS phone
@@ -12,7 +12,7 @@ WORKDIR /src
 COPY phone/go.mod phone/go.sum ./
 RUN go mod download
 COPY phone/ ./
-RUN CGO_ENABLED=0 go build -trimpath -o /out/fedcandor-phone ./cmd/fedcandor-phone
+RUN CGO_ENABLED=0 go build -trimpath -o /out/omadora-phone ./cmd/omadora-phone
 
 # ---- whisper-cli for dictation, at the commit steps/75-dictation.sh pins ----
 # Generic CPU code (the image runs on any x86-64) plus Vulkan for the GPU.
@@ -35,14 +35,14 @@ RUN set -eu; \
 # ---- the OS image ----
 FROM quay.io/fedora-ostree-desktops/sway-atomic:${FEDORA_VERSION}
 
-ARG IMAGE_REF=ghcr.io/etmartinkazoo/fedcandor
+ARG IMAGE_REF=ghcr.io/etmartinkazoo/omadora
 ARG IMAGE_VERSION=dev
 
-COPY --from=phone /out/fedcandor-phone /usr/bin/fedcandor-phone
+COPY --from=phone /out/omadora-phone /usr/bin/omadora-phone
 COPY --from=whisper /out/whisper-cli /usr/bin/whisper-cli
-COPY . /usr/share/fedcandor
-COPY --from=whisper /out/whisper-build-info /usr/share/fedcandor/whisper-build-info
+COPY . /usr/share/omadora
+COPY --from=whisper /out/whisper-build-info /usr/share/omadora/whisper-build-info
 RUN IMAGE_REF="${IMAGE_REF}" IMAGE_VERSION="${IMAGE_VERSION}" \
-        /usr/share/fedcandor/atomic/build.sh \
+        /usr/share/omadora/atomic/build.sh \
     && rm -rf /var/cache/* /var/log/* /tmp/* \
     && bootc container lint

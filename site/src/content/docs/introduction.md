@@ -1,11 +1,11 @@
 ---
 title: Introduction
-description: What fedcandor is, who it's for, and why it's built on Fedora Atomic, sway and Quickshell.
+description: What omadora is, who it's for, and why it's built on Fedora Atomic, sway and Quickshell.
 section: Start here
 order: 1
 ---
 
-fedcandor is a complete desktop for people whose computer is a tool for work. It combines three
+omadora is a complete desktop for people whose computer is a tool for work. It combines three
 mature open-source projects, and each one covers one side of the job:
 
 | Layer | Project | What it gives you |
@@ -15,7 +15,7 @@ mature open-source projects, and each one covers one side of the job:
 | Desktop shell | **Quickshell** | Beauty. One coherent, themed shell for the bar, launcher, notifications, clipboard, screenshots, Wi-Fi, Bluetooth, audio, lock screen and more. |
 
 Usually you have to pick two: a stable system that's dull, a beautiful one that breaks on
-updates, or a fast one you spend weekends maintaining. fedcandor's premise is that you don't
+updates, or a fast one you spend weekends maintaining. omadora's premise is that you don't
 have to choose any more.
 
 ## Who it's for
@@ -36,7 +36,7 @@ have to choose any more.
 
 ## The name
 
-**fedcandor** is *Fedora* + *candor*. In Latin, *candor* means brilliance or radiance (literally,
+**omadora** is *Fedora* + *candor*. In Latin, *candor* means brilliance or radiance (literally,
 dazzling whiteness), and also sincerity and openness. Both meanings apply: a desktop that's a
 pleasure to look at, and one that's honest about what it does. Every line of it is open and auditable.
 

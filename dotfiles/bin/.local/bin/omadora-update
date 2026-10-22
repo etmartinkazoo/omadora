@@ -1,9 +1,9 @@
 #!/usr/bin/python3 -I
-"""fedcandor-update: system update status for the shell's Updates panel.
+"""omadora-update: system update status for the shell's Updates panel.
 
-    fedcandor-update status [--check]   JSON status (--check asks the server)
-    fedcandor-update upgrade            atomic: download and stage the update
-    fedcandor-update rollback           atomic: boot the previous image next time
+    omadora-update status [--check]   JSON status (--check asks the server)
+    omadora-update upgrade            atomic: download and stage the update
+    omadora-update rollback           atomic: boot the previous image next time
 
 On the signed image (Fedora Atomic / bootc), updates are whole images: they're
 staged in the background (rpm-ostreed-automatic) and applied on restart, and
@@ -22,7 +22,7 @@ import sys
 import time
 from pathlib import Path
 
-STATE = Path(os.environ.get("XDG_STATE_HOME") or Path.home() / ".local/state") / "fedcandor"
+STATE = Path(os.environ.get("XDG_STATE_HOME") or Path.home() / ".local/state") / "omadora"
 CACHE = STATE / "updates.json"
 
 
@@ -141,13 +141,13 @@ def main():
         print(json.dumps(atomic_status(check) if atomic() else dnf_status(check)))
     elif cmd in ("upgrade", "rollback"):
         if not atomic():
-            sys.exit("fedcandor-update: on a regular install, run `sudo dnf upgrade` (the Updates panel opens it in a terminal)")
+            sys.exit("omadora-update: on a regular install, run `sudo dnf upgrade` (the Updates panel opens it in a terminal)")
         code = subprocess.call(["rpm-ostree", cmd])
         sys.exit(code)
     elif cmd in ("-h", "--help"):
         print(__doc__.strip())
     else:
-        sys.exit(f"fedcandor-update: unknown command {cmd} (see --help)")
+        sys.exit(f"omadora-update: unknown command {cmd} (see --help)")
 
 
 if __name__ == "__main__":

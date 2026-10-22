@@ -1,7 +1,7 @@
 ---
 title: First steps
 description: The shortcuts that cover most of your day, and a tour of the bar.
-section: Using fedcandor
+section: Using omadora
 order: 1
 ---
 
@@ -11,7 +11,7 @@ at any time to see every keybinding on one screen, generated live from your sway
 Coming from [Omarchy](https://omarchy.org)? Most of its shortcuts work here too: <kbd>Super</kbd>+<kbd>Space</kbd>,
 <kbd>Super</kbd>+<kbd>T</kbd>, <kbd>Super</kbd>+<kbd>Escape</kbd>, <kbd>Super</kbd>+<kbd>M</kbd>,
 <kbd>Alt</kbd>+<kbd>Tab</kbd> and the <kbd>Super</kbd>+<kbd>Ctrl</kbd> panel keys. The exception is
-<kbd>Super</kbd>+<kbd>H</kbd>/<kbd>J</kbd>/<kbd>K</kbd>/<kbd>L</kbd>, which fedcandor keeps for vim-style movement.
+<kbd>Super</kbd>+<kbd>H</kbd>/<kbd>J</kbd>/<kbd>K</kbd>/<kbd>L</kbd>, which omadora keeps for vim-style movement.
 
 ## The essentials
 

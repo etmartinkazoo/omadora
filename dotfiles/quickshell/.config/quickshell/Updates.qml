@@ -4,7 +4,7 @@ import Quickshell
 import Quickshell.Io
 
 // Updates panel (Quick Settings → Updates, or U there). Reads
-// `fedcandor-update status`:
+// `omadora-update status`:
 //   - signed image (Fedora Atomic / bootc): the running image, a staged update
 //     waiting for a restart, and the previous image to roll back to. Updates
 //     download in the background; you choose when to restart.
@@ -15,7 +15,7 @@ Scope {
     id: upd
 
     readonly property bool active: ShellState.activePopup === "updates"
-    readonly property string cli: Quickshell.env("HOME") + "/.local/bin/fedcandor-update"
+    readonly property string cli: Quickshell.env("HOME") + "/.local/bin/omadora-update"
 
     property var status: ({})
     property bool checking: false

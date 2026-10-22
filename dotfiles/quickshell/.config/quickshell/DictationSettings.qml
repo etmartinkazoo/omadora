@@ -6,14 +6,14 @@ import Quickshell.Services.Pipewire
 
 // Dictation settings: install the speech engine, pick a model, language,
 // microphone and what happens with the text, and try it out. Everything is
-// done through fedcandor-dictate (status/install/download/set/test).
+// done through omadora-dictate (status/install/download/set/test).
 Scope {
     id: settings
 
-    readonly property string cli: Quickshell.env("HOME") + "/.local/bin/fedcandor-dictate"
+    readonly property string cli: Quickshell.env("HOME") + "/.local/bin/omadora-dictate"
     readonly property bool active: ShellState.activePopup === "dictation"
 
-    property var info: null                 // `fedcandor-dictate status`
+    property var info: null                 // `omadora-dictate status`
     property string busy: ""                // "install" | "download:<model>" | "test" | ""
     property var log: []                    // last lines of install/download output
     property string testResult: ""
@@ -395,7 +395,7 @@ Scope {
                 }
             }
 
-            Hint { text: "Esc close · settings are saved in ~/.config/fedcandor/dictation.conf" }
+            Hint { text: "Esc close · settings are saved in ~/.config/omadora/dictation.conf" }
         }
     }
 }

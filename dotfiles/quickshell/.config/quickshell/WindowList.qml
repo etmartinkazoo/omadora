@@ -279,7 +279,7 @@ Singleton {
     // ---- Window snapshots (overview, taskbar/dock previews) ----
     // Captured with grim, one PNG per window, into a private runtime folder.
     // Not live: refreshed whenever a preview or the overview opens.
-    readonly property string thumbDir: (Quickshell.env("XDG_RUNTIME_DIR") || "/tmp") + "/fedcandor/thumbs"
+    readonly property string thumbDir: (Quickshell.env("XDG_RUNTIME_DIR") || "/tmp") + "/omadora/thumbs"
     property int thumbVersion: 0
     property var pendingCaptures: []
 

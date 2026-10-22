@@ -1,8 +1,8 @@
-# Shared helpers for fedcandor install steps. Sourced, not executed.
+# Shared helpers for omadora install steps. Sourced, not executed.
 # shellcheck shell=bash
 
-FEDCANDOR_ROOT="${FEDCANDOR_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
-FEDCANDOR_STATE="${XDG_STATE_HOME:-$HOME/.local/state}/fedcandor"
+OMADORA_ROOT="${OMADORA_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
+OMADORA_STATE="${XDG_STATE_HOME:-$HOME/.local/state}/omadora"
 
 if [ -t 1 ]; then
     _c_info=$'\033[1;34m' _c_ok=$'\033[1;32m' _c_warn=$'\033[1;33m' _c_err=$'\033[1;31m' _c_off=$'\033[0m'
@@ -46,5 +46,5 @@ download_verified() {
 # Package list without comments/blank lines: packages/fedora.txt, or the
 # named list (e.g. `package_list build`).
 package_list() {
-    grep -Ev '^\s*(#|$)' "$FEDCANDOR_ROOT/packages/${1:-fedora}.txt" | awk '{print $1}'
+    grep -Ev '^\s*(#|$)' "$OMADORA_ROOT/packages/${1:-fedora}.txt" | awk '{print $1}'
 }

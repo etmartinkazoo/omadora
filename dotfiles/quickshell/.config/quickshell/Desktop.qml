@@ -4,15 +4,15 @@ import Quickshell
 import Quickshell.Io
 
 // Desktop mode: tiling (bottom bar), windows (bottom taskbar) or macos (top
-// bar + dock). `fedcandor-mode` owns the mode and writes it to
-// ~/.local/state/fedcandor/mode; this singleton watches that file, so a
+// bar + dock). `omadora-mode` owns the mode and writes it to
+// ~/.local/state/omadora/mode; this singleton watches that file, so a
 // switch from anywhere (CLI, keybind, Quick Settings) applies live.
 //
 // All bar geometry lives here, so the three modes share one set of numbers.
 Singleton {
     id: desktop
 
-    readonly property string cli: Quickshell.env("HOME") + "/.local/bin/fedcandor-mode"
+    readonly property string cli: Quickshell.env("HOME") + "/.local/bin/omadora-mode"
     readonly property var modes: [
         { name: "tiling", label: "Tiling", icon: "󰕰" },
         { name: "windows", label: "Windows", icon: "󰖲" },
@@ -22,7 +22,7 @@ Singleton {
     property string mode: "tiling"
 
     FileView {
-        path: (Quickshell.env("XDG_STATE_HOME") || Quickshell.env("HOME") + "/.local/state") + "/fedcandor/mode"
+        path: (Quickshell.env("XDG_STATE_HOME") || Quickshell.env("HOME") + "/.local/state") + "/omadora/mode"
         watchChanges: true
         printErrors: false
         onFileChanged: reload()

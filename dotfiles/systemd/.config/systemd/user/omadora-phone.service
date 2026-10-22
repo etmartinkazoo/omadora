@@ -1,5 +1,5 @@
 [Unit]
-Description=fedcandor phone: texts (Google Messages) and calls (Bluetooth) for the panel
+Description=omadora phone: texts (Google Messages) and calls (Bluetooth) for the panel
 PartOf=graphical-session.target
 After=graphical-session.target pipewire.service wireplumber.service
 StartLimitIntervalSec=300
@@ -7,9 +7,9 @@ StartLimitBurst=10
 
 [Service]
 Type=simple
-# A build from a ~/fedcandor checkout (steps/70-phone.sh) wins over the image's.
+# A build from a ~/omadora checkout (steps/70-phone.sh) wins over the image's.
 ExecSearchPath=%h/.local/bin:/usr/local/bin:/usr/bin
-ExecStart=fedcandor-phone daemon
+ExecStart=omadora-phone daemon
 Restart=on-failure
 RestartSec=5
 

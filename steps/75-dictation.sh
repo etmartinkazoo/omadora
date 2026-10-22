@@ -11,12 +11,12 @@ declare -A MODELS=(
     [small.en]=c6138d6d58ecc8322097e0f987c32f1be8bb0a18532a3f88f734d1bbf9c41e5d
     [large-v3-turbo-q5_0]=394221709cd5ad1f40c46e6031ca61bce88931e6e088c188294c6d5a55ffa7e2
 )
-DATA="${XDG_DATA_HOME:-$HOME/.local/share}/fedcandor/whisper"
-CONF="${XDG_CONFIG_HOME:-$HOME/.config}/fedcandor/dictation.conf"
+DATA="${XDG_DATA_HOME:-$HOME/.local/share}/omadora/whisper"
+CONF="${XDG_CONFIG_HOME:-$HOME/.config}/omadora/dictation.conf"
 
 # GPU (Vulkan) only when everything it needs is installed; otherwise the CPU.
 vulkan=OFF
-if [ "${FEDCANDOR_WHISPER_VULKAN:-auto}" != off ] && command -v glslc >/dev/null \
+if [ "${OMADORA_WHISPER_VULKAN:-auto}" != off ] && command -v glslc >/dev/null \
     && [ -e /usr/include/vulkan/vulkan.h ] && [ -e /usr/include/spirv/unified1/spirv.hpp ]; then
     vulkan=ON
 fi
@@ -29,7 +29,7 @@ done
 # The Atomic image ships whisper-cli prebuilt (atomic/Containerfile); a local
 # build in ~/.local/bin, when there is one, takes precedence.
 if [ -x /usr/bin/whisper-cli ] && [ ! -x "$HOME/.local/bin/whisper-cli" ]; then
-    ok "whisper-cli comes with the fedcandor image"
+    ok "whisper-cli comes with the omadora image"
 elif [ ! -f "$STAMP" ] || [ ! -x "$HOME/.local/bin/whisper-cli" ]; then
     for cmd in git cmake g++; do
         command -v "$cmd" >/dev/null 2>&1 || die "missing command: $cmd (install the packages first: Dictation settings → Install, or the system-packages step)"

@@ -21,10 +21,10 @@ func runtimeDir() string {
 	if d := os.Getenv("XDG_RUNTIME_DIR"); d != "" {
 		return d
 	}
-	return filepath.Join(os.TempDir(), fmt.Sprintf("fedcandor-phone-%d", os.Getuid()))
+	return filepath.Join(os.TempDir(), fmt.Sprintf("omadora-phone-%d", os.Getuid()))
 }
 
-func socketPath() string { return filepath.Join(runtimeDir(), "fedcandor-phone.sock") }
+func socketPath() string { return filepath.Join(runtimeDir(), "omadora-phone.sock") }
 
 type request struct {
 	ID     *json.Number `json:"id,omitempty"`

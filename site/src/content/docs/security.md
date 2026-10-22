@@ -1,11 +1,11 @@
 ---
 title: Security
-description: What fedcandor protects against, how, and where its limits are.
+description: What omadora protects against, how, and where its limits are.
 section: Running it
 order: 1
 ---
 
-fedcandor's security model is simple: **secure defaults that need no attention**, built from
+omadora's security model is simple: **secure defaults that need no attention**, built from
 mature, audited components rather than custom inventions. This page lists every measure, so you
 can verify each one yourself.
 
@@ -34,7 +34,7 @@ Neither ever reboots on its own. See [Updates & rollback](../updates/).
 
 ### Bluetooth
 
-Bluetooth pairing is **deny-by-default**. fedcandor's pairing agent rejects every pairing and
+Bluetooth pairing is **deny-by-default**. omadora's pairing agent rejects every pairing and
 service request unless you started that pairing from the Bluetooth menu, and even then it only
 accepts it for 90 seconds. The adapter is only pairable while the menu is open. This blocks
 silent pairing by nearby devices, such as a fake keyboard injecting keystrokes
@@ -68,7 +68,7 @@ stored. It lives on your encrypted disk; clear it any time with **Clear All** or
 - CI actions are pinned to commit hashes, not tags that could be moved.
 - Everything is plain text in one git repository, so anyone can audit it.
 
-## What fedcandor doesn't do
+## What omadora doesn't do
 
 Be clear about these:
 
@@ -84,6 +84,6 @@ getenforce                             # Enforcing
 mokutil --sb-state                     # SecureBoot enabled
 lsblk -o NAME,TYPE,MOUNTPOINTS         # a "crypt" device under /
 sudo firewall-cmd --list-services      # no ssh unless you need it
-rpm-ostree status                      # Atomic: signed fedcandor image
+rpm-ostree status                      # Atomic: signed omadora image
 bluetoothctl show | grep Pairable      # "no" unless the Bluetooth menu is open
 ```

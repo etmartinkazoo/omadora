@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
-"""fedcandor-theme: switch, install and render fedcandor themes.
+"""omadora-theme: switch, install and render omadora themes.
 
-    fedcandor-theme list [--json]        installed themes (* = current)
-    fedcandor-theme current              print the current theme
-    fedcandor-theme set NAME             switch theme (applies live)
-    fedcandor-theme next | prev          cycle through themes
-    fedcandor-theme refresh              re-render the current theme
-    fedcandor-theme bg-next | bg-prev    cycle the current theme's wallpapers
-    fedcandor-theme bg-set N             use the current theme's Nth wallpaper (from 0)
-    fedcandor-theme wallpaper PATH       use your own wallpaper for every theme
-    fedcandor-theme wallpaper --clear    go back to the theme's wallpapers
-    fedcandor-theme install SOURCE       omarchy:NAME, a git URL, or a local folder
-    fedcandor-theme remove NAME          remove an installed (non built-in) theme
+    omadora-theme list [--json]        installed themes (* = current)
+    omadora-theme current              print the current theme
+    omadora-theme set NAME             switch theme (applies live)
+    omadora-theme next | prev          cycle through themes
+    omadora-theme refresh              re-render the current theme
+    omadora-theme bg-next | bg-prev    cycle the current theme's wallpapers
+    omadora-theme bg-set N             use the current theme's Nth wallpaper (from 0)
+    omadora-theme wallpaper PATH       use your own wallpaper for every theme
+    omadora-theme wallpaper --clear    go back to the theme's wallpapers
+    omadora-theme install SOURCE       omarchy:NAME, a git URL, or a local folder
+    omadora-theme remove NAME          remove an installed (non built-in) theme
 
 Themes use Omarchy's colors.toml format, so Omarchy themes work as-is. Every
 color is validated as a hex value before it reaches any config: palette values
@@ -35,9 +35,9 @@ XDG_DATA = Path(os.environ.get("XDG_DATA_HOME") or HOME / ".local/share")
 XDG_STATE = Path(os.environ.get("XDG_STATE_HOME") or HOME / ".local/state")
 XDG_CONFIG = Path(os.environ.get("XDG_CONFIG_HOME") or HOME / ".config")
 
-USER_THEMES = XDG_DATA / "fedcandor/themes"
-USER_TEMPLATES = XDG_CONFIG / "fedcandor/templates"
-STATE = XDG_STATE / "fedcandor/theme"
+USER_THEMES = XDG_DATA / "omadora/themes"
+USER_TEMPLATES = XDG_CONFIG / "omadora/templates"
+STATE = XDG_STATE / "omadora/theme"
 DEFAULT_THEME = "candor"
 OMARCHY_REPO = "https://github.com/omacom/omarchy.git"
 
@@ -47,23 +47,23 @@ IMAGE_EXT = {".jpg", ".jpeg", ".png", ".webp"}
 
 
 def die(msg):
-    print(f"fedcandor-theme: {msg}", file=sys.stderr)
+    print(f"omadora-theme: {msg}", file=sys.stderr)
     sys.exit(1)
 
 
 def warn(msg):
-    print(f"fedcandor-theme: {msg}", file=sys.stderr)
+    print(f"omadora-theme: {msg}", file=sys.stderr)
 
 
 def repo_root():
-    """The fedcandor checkout (via this script's symlink) or the Atomic image copy."""
-    env = os.environ.get("FEDCANDOR_ROOT")
+    """The omadora checkout (via this script's symlink) or the Atomic image copy."""
+    env = os.environ.get("OMADORA_ROOT")
     if env:
         return Path(env)
     for parent in Path(__file__).resolve().parents:
         if (parent / "themes").is_dir() and (parent / "templates").is_dir():
             return parent
-    return Path("/usr/share/fedcandor")
+    return Path("/usr/share/omadora")
 
 
 ROOT = repo_root()
@@ -85,7 +85,7 @@ def themes():
 def theme_dir(name):
     t = themes().get(name)
     if not t:
-        die(f"no theme named '{name}' (see: fedcandor-theme list)")
+        die(f"no theme named '{name}' (see: omadora-theme list)")
     return t[0]
 
 
@@ -291,12 +291,12 @@ def kitty_live():
 
 
 def neovim_live():
-    """Reload the colorscheme in running Neovims that use fedcandor's (and only those)."""
+    """Reload the colorscheme in running Neovims that use omadora's (and only those)."""
     nvim = shutil.which("nvim")
     runtime = os.environ.get("XDG_RUNTIME_DIR") or f"/run/user/{os.getuid()}"
     if not nvim:
         return
-    expr = 'execute("if get(g:, \'colors_name\', \'\') ==# \'fedcandor\' | colorscheme fedcandor | endif")'
+    expr = 'execute("if get(g:, \'colors_name\', \'\') ==# \'omadora\' | colorscheme omadora | endif")'
     for sock in glob.glob(os.path.join(runtime, "nvim.*.0")):
         try:
             subprocess.run([nvim, "--server", sock, "--remote-expr", expr],
@@ -314,7 +314,7 @@ def icon_theme_installed(name):
 
 def apply_gtk(d, c):
     dark = c["mode"] == "dark"
-    # fedcandor uses Tela everywhere; a theme's icons.theme (Omarchy's Yaru
+    # omadora uses Tela everywhere; a theme's icons.theme (Omarchy's Yaru
     # choices) is ignored so icons stay consistent across themes.
     wanted = ["Tela-dark" if dark else "Tela-light", "Tela", "Adwaita"]
     icons = next((w for w in wanted if icon_theme_installed(w)), "Adwaita")
@@ -326,12 +326,12 @@ def apply_gtk(d, c):
         write(XDG_CONFIG / version / "settings.ini", ini)
 
 
-# Firefox prefs fedcandor owns, kept in a marked block in each profile's user.js.
-# The fedcandor Theme extension (steps/25-firefox.sh) applies the palette live and
+# Firefox prefs omadora owns, kept in a marked block in each profile's user.js.
+# The omadora Theme extension (steps/25-firefox.sh) applies the palette live and
 # sets the light/dark scheme for the browser and for web pages; these prefs make
 # Firefox defer to it instead of forcing one.
-FIREFOX_BLOCK_START = "// >>> fedcandor-theme >>>"
-FIREFOX_BLOCK_END = "// <<< fedcandor-theme <<<"
+FIREFOX_BLOCK_START = "// >>> omadora-theme >>>"
+FIREFOX_BLOCK_END = "// <<< omadora-theme <<<"
 FIREFOX_PREFS = {
     "toolkit.legacyUserProfileCustomizations.stylesheets": "true",
     "browser.theme.toolbar-theme": "2",                      # follow the active theme
@@ -342,7 +342,7 @@ FIREFOX_PREF_LINE = re.compile(r'^\s*user_pref\(\s*"([^"]+)"')
 
 
 def firefox_user_js(existing, mode):
-    """Drop fedcandor's old block and any other line setting the prefs it owns,
+    """Drop omadora's old block and any other line setting the prefs it owns,
     then append a fresh block."""
     prefs = dict(FIREFOX_PREFS)
     # A theme set before this extension forced dark; keep it in line with the theme.
@@ -432,7 +432,7 @@ def apply(name):
         kitty_live()
 
     if "neovim.lua" in rendered:
-        write(XDG_CONFIG / "nvim/colors/fedcandor.lua", rendered["neovim.lua"])
+        write(XDG_CONFIG / "nvim/colors/omadora.lua", rendered["neovim.lua"])
         neovim_live()
 
     apply_gtk(d, c)
@@ -443,7 +443,7 @@ def apply(name):
 # --------------------------------------------------------------- install ----
 
 def install(source, name=None):
-    with tempfile.TemporaryDirectory(prefix="fedcandor-theme-") as tmp:
+    with tempfile.TemporaryDirectory(prefix="omadora-theme-") as tmp:
         tmp = Path(tmp)
         if source.startswith("omarchy:"):
             theme = source.split(":", 1)[1]
@@ -491,7 +491,7 @@ def install(source, name=None):
             else:
                 shutil.copy2(bg, target)
             copied += 1
-    print(f"installed '{name}' ({copied} wallpaper{'s' if copied != 1 else ''}) — apply with: fedcandor-theme set {name}")
+    print(f"installed '{name}' ({copied} wallpaper{'s' if copied != 1 else ''}) — apply with: omadora-theme set {name}")
 
 
 def qt_webp():
@@ -507,7 +507,7 @@ def run(cmd):
 # ------------------------------------------------------------------- cli ----
 
 def main():
-    p = argparse.ArgumentParser(prog="fedcandor-theme", description=__doc__.split("\n\n")[0])
+    p = argparse.ArgumentParser(prog="omadora-theme", description=__doc__.split("\n\n")[0])
     sub = p.add_subparsers(dest="cmd", required=True)
     ls = sub.add_parser("list")
     ls.add_argument("--json", action="store_true")

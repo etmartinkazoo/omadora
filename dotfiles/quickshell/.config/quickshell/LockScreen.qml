@@ -6,7 +6,7 @@ import Quickshell.Io
 import Quickshell.Wayland
 import Quickshell.Services.Pam
 
-// Session lock (ext-session-lock). Locked via `fedcandor-lock`, which swayidle
+// Session lock (ext-session-lock). Locked via `omadora-lock`, which swayidle
 // runs for idle, before-sleep and `loginctl lock-session`; it waits for
 // isSecure() so suspend can't race the lock.
 // Authenticates through the same PAM stack as swaylock (/etc/pam.d/swaylock).

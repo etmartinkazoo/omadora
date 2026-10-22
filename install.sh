@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# fedcandor installer: a stable, secure sway + Quickshell desktop for Fedora.
+# omadora installer: a stable, secure sway + Quickshell desktop for Fedora.
 #
 #   ./install.sh                run every step (asks for sudo for [root] steps)
 #   ./install.sh --user-only    skip the [root] steps (packages, security)
@@ -12,7 +12,7 @@ source "$(dirname "$0")/lib/common.sh"
 
 steps=()
 while IFS= read -r -d '' f; do steps+=("$f"); done \
-    < <(find "$FEDCANDOR_ROOT/steps" -name '[0-9][0-9]-*.sh' -print0 | sort -z)
+    < <(find "$OMADORA_ROOT/steps" -name '[0-9][0-9]-*.sh' -print0 | sort -z)
 
 step_name() { basename "$1" .sh | sed 's/^[0-9]*-//'; }
 step_desc() { sed -n '2s/^# //p' "$1"; }
@@ -51,4 +51,4 @@ for s in "${steps[@]}"; do
 done
 
 [ "$ran" -gt 0 ] || die "no matching steps (see --list)"
-ok "fedcandor: $ran step(s) done"
+ok "omadora: $ran step(s) done"

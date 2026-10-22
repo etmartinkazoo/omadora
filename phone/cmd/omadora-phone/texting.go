@@ -236,7 +236,7 @@ func (t *texting) run(ctx context.Context) {
 			return
 		}
 		if errors.Is(err, errUnpaired) {
-			t.setState("unpaired", "run: fedcandor-phone pair")
+			t.setState("unpaired", "run: omadora-phone pair")
 			waitForFile(ctx, sessionPath())
 			backoff = 5 * time.Second
 			continue
@@ -793,7 +793,7 @@ func mediaDir() string {
 		home, _ := os.UserHomeDir()
 		base = filepath.Join(home, ".cache")
 	}
-	return filepath.Join(base, "fedcandor/phone/media")
+	return filepath.Join(base, "omadora/phone/media")
 }
 
 // mediaSource picks what to download: the full image when the phone has
@@ -836,7 +836,7 @@ func (t *texting) fetchMedia(convID string, conv *gmproto.Conversation, m *gmpro
 	var todo []*gmproto.MediaContent
 	for _, info := range m.GetMessageInfo() {
 		media := info.GetMediaContent()
-		if media != nil && os.Getenv("FEDCANDOR_PHONE_DEBUG") != "" {
+		if media != nil && os.Getenv("OMADORA_PHONE_DEBUG") != "" {
 			fmt.Fprintf(os.Stderr, "media msg=%s mime=%q id=%q thumb=%q size=%d keylen=%d status=%s\n", m.GetMessageID(), media.GetMimeType(),
 				media.GetMediaID(), media.GetThumbnailMediaID(), media.GetSize(), len(media.GetDecryptionKey()), m.GetMessageStatus().GetStatus())
 		}

@@ -1,5 +1,5 @@
 //@ pragma UseQApplication
-// fedcandor uses Tela icons everywhere. Pinned here rather than read from GTK
+// omadora uses Tela icons everywhere. Pinned here rather than read from GTK
 // settings, which Qt only reads at startup. App icons are the same in every
 // Tela variant, so light and dark themes share it.
 //@ pragma IconTheme Tela

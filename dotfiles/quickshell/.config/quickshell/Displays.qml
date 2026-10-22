@@ -10,12 +10,12 @@ import Quickshell.Wayland
 // rotation; Apply asks "Keep these settings?" and reverts after 15 seconds
 // unless you confirm, so a bad mode can't strand you on a dark screen.
 // Keeping saves the layout as the profile for this set of screens: plugging
-// them in again restores it (fedcandor-displays restore, run on hotplug).
+// them in again restores it (omadora-displays restore, run on hotplug).
 Scope {
     id: disp
 
     readonly property bool active: ShellState.activePopup === "displays"
-    readonly property string cli: Quickshell.env("HOME") + "/.local/bin/fedcandor-displays"
+    readonly property string cli: Quickshell.env("HOME") + "/.local/bin/omadora-displays"
 
     property var outputs: []        // as listed by sway
     property var draft: []          // edited copy

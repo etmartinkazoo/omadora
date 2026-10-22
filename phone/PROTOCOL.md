@@ -1,6 +1,6 @@
-# fedcandor-phone daemon protocol
+# omadora-phone daemon protocol
 
-`fedcandor-phone daemon` listens on `$XDG_RUNTIME_DIR/fedcandor-phone.sock` (mode 0600).
+`omadora-phone daemon` listens on `$XDG_RUNTIME_DIR/omadora-phone.sock` (mode 0600).
 Newline-delimited JSON, one object per line, both directions. Several clients may connect;
 every client receives every event.
 
@@ -23,7 +23,7 @@ Every request has a `cmd`; `id` (any number) is optional and echoed in the reply
 | `newConversation` | `number` (any format) | `{"conv"}` — an existing or new conversation with that number |
 | `contacts` | – | `{"contacts": [{"name", "number"}]}` |
 | `focus` | `conv` (or `""`) | – the conversation open on screen: no notifications for it |
-| `pairMessages` | – | – pairs texting through the Google account in the remembered Firefox profile (`fedcandor-phone pair` remembers it); progress arrives as `pairing` events. Only while `texting` is `unpaired` or `error` |
+| `pairMessages` | – | – pairs texting through the Google account in the remembered Firefox profile (`omadora-phone pair` remembers it); progress arrives as `pairing` events. Only while `texting` is `unpaired` or `error` |
 | `dial` | `number` | – |
 | `answer` | `call` (path) | – |
 | `hangup` | `call` (path) | – |
@@ -37,8 +37,8 @@ Replies: `{"id": n, "ok": true, "data": {...}}` or `{"id": n, "ok": false, "erro
 ## Cache
 
 The daemon keeps conversations, the last ~1000 messages of each thread it has seen, and
-contacts in `~/.local/state/fedcandor/phone/cache.db` (mode 0600), and pictures in
-`~/.cache/fedcandor/phone/media` (capped at 500 MB). On connect it brings the 30 most recent
+contacts in `~/.local/state/omadora/phone/cache.db` (mode 0600), and pictures in
+`~/.cache/omadora/phone/media` (capped at 500 MB). On connect it brings the 30 most recent
 threads up to date in the background, so they open instantly and `search` covers them. The phone
 is the source of truth: what it sends overwrites the cache, and conversations or messages it no
 longer has are dropped.
@@ -81,7 +81,7 @@ Message:
 ```json
 {"id": "1234", "ts": 1792100000000, "fromMe": true, "sender": "Joseph Spoerl",
  "text": "On my way", "status": "sending" | "sent" | "delivered" | "read" | "failed" | "received",
- "media": [{"mime": "image/jpeg", "name": "", "path": "/run/user/1000/fedcandor-phone/media/abc.jpg"}],
+ "media": [{"mime": "image/jpeg", "name": "", "path": "/run/user/1000/omadora-phone/media/abc.jpg"}],
  "reactions": [{"emoji": "👍", "count": 2, "mine": true}], "replyTo": "1230"}
 ```
 `replyTo` is the id of the message this one answers (empty if none). Mark-unread doesn't exist

@@ -57,7 +57,7 @@ Scope {
                 exclusionMode: ExclusionMode.Ignore
                 WlrLayershell.layer: WlrLayer.Top
                 WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
-                WlrLayershell.namespace: "fedcandor-titlebar"
+                WlrLayershell.namespace: "omadora-titlebar"
 
                 // Drag to move, double-click to maximize. The strip stays put
                 // while dragging (pointer events keep coming while the button
@@ -272,7 +272,7 @@ Scope {
                 mask: Region {}
                 WlrLayershell.layer: WlrLayer.Top
                 WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
-                WlrLayershell.namespace: "fedcandor-snap-preview"
+                WlrLayershell.namespace: "omadora-snap-preview"
 
                 Rectangle {
                     readonly property var r: perScreen.win && perScreen.zone !== "" ? WindowList.zoneRect(perScreen.win, perScreen.zone) : null

@@ -3,15 +3,15 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 
-// Colors come from the active fedcandor theme: `fedcandor-theme` renders
-// templates/quickshell.json.tpl into ~/.local/state/fedcandor/theme/quickshell.json
+// Colors come from the active omadora theme: `omadora-theme` renders
+// templates/quickshell.json.tpl into ~/.local/state/omadora/theme/quickshell.json
 // and this singleton watches that file, so theme switches apply live.
 Singleton {
     id: theme
 
-    readonly property string cli: Quickshell.env("HOME") + "/.local/bin/fedcandor-theme"
+    readonly property string cli: Quickshell.env("HOME") + "/.local/bin/omadora-theme"
     readonly property string statePath: (Quickshell.env("XDG_STATE_HOME") || Quickshell.env("HOME") + "/.local/state")
-        + "/fedcandor/theme/quickshell.json"
+        + "/omadora/theme/quickshell.json"
 
     property var palette: ({})
 

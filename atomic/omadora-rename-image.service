@@ -1,0 +1,13 @@
+[Unit]
+Description=omadora: follow the image's rename (ghcr.io/.../fedcandor is now .../omadora)
+Documentation=file:///usr/share/omadora/atomic/README.md
+ConditionPathExists=/run/ostree-booted
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/share/omadora/atomic/rename-image.sh
+
+[Install]
+WantedBy=multi-user.target

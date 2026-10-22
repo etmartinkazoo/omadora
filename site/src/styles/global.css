@@ -1,12 +1,12 @@
 @font-face {
 	font-family: '0xProto';
-	src: url('/fedcandor/fonts/0xProto-Regular.woff2') format('woff2');
+	src: url('/omadora/fonts/0xProto-Regular.woff2') format('woff2');
 	font-weight: 400;
 	font-display: swap;
 }
 @font-face {
 	font-family: '0xProto';
-	src: url('/fedcandor/fonts/0xProto-Bold.woff2') format('woff2');
+	src: url('/omadora/fonts/0xProto-Bold.woff2') format('woff2');
 	font-weight: 700;
 	font-display: swap;
 }
@@ -14,7 +14,7 @@
 /* Nerd Font icon glyphs only (see scripts/subset-icons.py) */
 @font-face {
 	font-family: 'fc-icons';
-	src: url('/fedcandor/fonts/fc-icons.woff') format('woff');
+	src: url('/omadora/fonts/fc-icons.woff') format('woff');
 	font-display: block;
 }
 

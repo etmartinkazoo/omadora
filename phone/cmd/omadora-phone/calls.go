@@ -370,10 +370,10 @@ func (c *calls) updateAudio(gws []gateway, list []Call) {
 	}
 	c.stopAudio()
 	route := &audioRoute{address: gw.address, rxTarget: source, txTarget: sink}
-	route.rx = loopback("fedcandor-phone-rx",
+	route.rx = loopback("omadora-phone-rx",
 		"target.object="+source+" node.dont-reconnect=true stream.dont-remix=true",
 		"media.role=Communication")
-	route.tx = loopback("fedcandor-phone-tx",
+	route.tx = loopback("omadora-phone-tx",
 		"media.role=Communication",
 		"target.object="+sink+" node.dont-reconnect=true")
 	c.mu.Lock()

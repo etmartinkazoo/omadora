@@ -1,23 +1,23 @@
 #!/usr/bin/env python3
-"""fedcandor-dictate: speak, and the words are typed into the focused window.
+"""omadora-dictate: speak, and the words are typed into the focused window.
 
-    fedcandor-dictate press      key down: start listening (or stop, if latched)
-    fedcandor-dictate release    key up: transcribe and type, unless it was a tap
-    fedcandor-dictate toggle     start, or stop and type
-    fedcandor-dictate cancel     stop listening and throw the audio away
+    omadora-dictate press      key down: start listening (or stop, if latched)
+    omadora-dictate release    key up: transcribe and type, unless it was a tap
+    omadora-dictate toggle     start, or stop and type
+    omadora-dictate cancel     stop listening and throw the audio away
 
 For the settings app (Quickshell's Dictation window):
-    fedcandor-dictate status             JSON: what's installed, models, settings
-    fedcandor-dictate install            install packages (via pkexec) and build whisper.cpp
-    fedcandor-dictate download MODEL     download and verify a model
-    fedcandor-dictate set KEY VALUE      change a setting in dictation.conf
-    fedcandor-dictate test [SECONDS]     record, transcribe, print JSON (nothing is typed)
+    omadora-dictate status             JSON: what's installed, models, settings
+    omadora-dictate install            install packages (via pkexec) and build whisper.cpp
+    omadora-dictate download MODEL     download and verify a model
+    omadora-dictate set KEY VALUE      change a setting in dictation.conf
+    omadora-dictate test [SECONDS]     record, transcribe, print JSON (nothing is typed)
 
 Hold the key to talk; a quick tap latches it on, and the next press stops it.
 Speech is transcribed locally with whisper.cpp (nothing leaves the machine) and
 typed with wtype. Quickshell shows a pill while listening/transcribing.
 
-Model and options: ~/.config/fedcandor/dictation.conf (KEY=value lines):
+Model and options: ~/.config/omadora/dictation.conf (KEY=value lines):
     MODEL=small.en          base.en | small.en | large-v3-turbo-q5_0 | a path to a ggml model
     LANGUAGE=en             or auto (needs a multilingual model, without .en)
     THREADS=0               0 = all cores
@@ -40,14 +40,14 @@ import time
 from pathlib import Path
 
 HOME = Path.home()
-RUN = Path(os.environ.get("XDG_RUNTIME_DIR") or f"/tmp/fedcandor-{os.getuid()}") / "fedcandor-dictate"
-DATA = Path(os.environ.get("XDG_DATA_HOME") or HOME / ".local/share") / "fedcandor/whisper"
-CONFIG = Path(os.environ.get("XDG_CONFIG_HOME") or HOME / ".config") / "fedcandor/dictation.conf"
+RUN = Path(os.environ.get("XDG_RUNTIME_DIR") or f"/tmp/omadora-{os.getuid()}") / "omadora-dictate"
+DATA = Path(os.environ.get("XDG_DATA_HOME") or HOME / ".local/share") / "omadora/whisper"
+CONFIG = Path(os.environ.get("XDG_CONFIG_HOME") or HOME / ".config") / "omadora/dictation.conf"
 # A local build (steps/75-dictation.sh) wins over the one the Atomic image ships.
 LOCAL_WHISPER = HOME / ".local/bin/whisper-cli"
 IMAGE_WHISPER = Path("/usr/bin/whisper-cli")
 WHISPER = LOCAL_WHISPER if LOCAL_WHISPER.exists() or not IMAGE_WHISPER.exists() else IMAGE_WHISPER
-BUILD_INFO = DATA / "build-info" if WHISPER == LOCAL_WHISPER else Path("/usr/share/fedcandor/whisper-build-info")
+BUILD_INFO = DATA / "build-info" if WHISPER == LOCAL_WHISPER else Path("/usr/share/omadora/whisper-build-info")
 
 AUDIO = RUN / "speech.wav"
 PID = RUN / "recorder.pid"
@@ -318,7 +318,7 @@ def repo_root():
     for parent in Path(__file__).resolve().parents:
         if (parent / "steps").is_dir() and (parent / "install.sh").is_file():
             return parent
-    return Path("/usr/share/fedcandor")
+    return Path("/usr/share/omadora")
 
 
 def have(cmd):
@@ -406,7 +406,7 @@ def download(name):
 def set_setting(key, value):
     key = key.upper()
     if key not in SETTINGS or "\n" in value:
-        sys.exit(f"fedcandor-dictate: can't set {key}")
+        sys.exit(f"omadora-dictate: can't set {key}")
     CONFIG.parent.mkdir(parents=True, exist_ok=True)
     lines = CONFIG.read_text().splitlines() if CONFIG.exists() else []
     out, done = [], False
@@ -506,7 +506,7 @@ def main():
         elif cmd == "cancel":
             cancel()
         else:
-            sys.exit(f"fedcandor-dictate: unknown command {cmd!r}")
+            sys.exit(f"omadora-dictate: unknown command {cmd!r}")
 
 
 if __name__ == "__main__":

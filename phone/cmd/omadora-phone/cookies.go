@@ -105,7 +105,7 @@ func namedProfile(roots []string, name string) (string, error) {
 // firefoxCookies reads the Google cookies from a copy of the profile's cookie
 // database (Firefox keeps the original locked while it runs).
 func firefoxCookies(profile string) (map[string]string, error) {
-	tmp, err := os.MkdirTemp("", "fedcandor-phone-cookies-")
+	tmp, err := os.MkdirTemp("", "omadora-phone-cookies-")
 	if err != nil {
 		return nil, err
 	}

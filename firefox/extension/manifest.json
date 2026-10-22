@@ -1,11 +1,11 @@
 {
   "manifest_version": 2,
-  "name": "fedcandor Theme",
+  "name": "omadora Theme",
   "version": "2.0.0",
-  "description": "Keeps Firefox in the current fedcandor theme, and follows theme switches live.",
+  "description": "Keeps Firefox in the current omadora theme, and follows theme switches live.",
   "browser_specific_settings": {
     "gecko": {
-      "id": "theme@fedcandor",
+      "id": "theme@omadora",
       "strict_min_version": "128.0",
       "data_collection_permissions": {
         "required": ["none"]

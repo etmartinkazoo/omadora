@@ -1,6 +1,6 @@
-# fedcandor on Fedora Atomic
+# omadora on Fedora Atomic
 
-The fedcandor desktop as a **bootable container image** on top of
+The omadora desktop as a **bootable container image** on top of
 [Fedora Sway Atomic](https://fedoraproject.org/atomic-desktops/sway/). Everything in this repo
 is baked into one image, and the OS updates as a whole:
 
@@ -9,7 +9,7 @@ is baked into one image, and the OS updates as a whole:
 - **Rollback**: the previous image stays installed. Pick it in the boot menu, or run
   `rpm-ostree rollback`.
 - **Signed**: CI signs every image with cosign, and the image only accepts signed updates.
-- **Read-only `/usr`**: the dotfiles live in `/usr/share/fedcandor` and are symlinked into your
+- **Read-only `/usr`**: the dotfiles live in `/usr/share/omadora` and are symlinked into your
   home on login, so an image update updates your desktop too.
 
 ## Install
@@ -19,34 +19,34 @@ is baked into one image, and the OS updates as a whole:
 2. Run the bootstrap, then reboot when it asks:
 
    ```bash
-   curl -fsSL https://raw.githubusercontent.com/etmartinkazoo/fedcandor/main/bootstrap.sh | bash
+   curl -fsSL https://raw.githubusercontent.com/etmartinkazoo/omadora/main/bootstrap.sh | bash
    ```
 
-   It trusts the fedcandor signing key (so even the first download is verified), rebases onto
-   `ghcr.io/etmartinkazoo/fedcandor:latest` and clones the repo to `~/fedcandor`.
-   `FEDCANDOR_TAG=45` pins a Fedora release; `FEDCANDOR_CHECKOUT=0` skips the clone.
-3. Log into the **Sway** session. On first login, `fedcandor-setup.service` links the dotfiles
+   It trusts the omadora signing key (so even the first download is verified), rebases onto
+   `ghcr.io/etmartinkazoo/omadora:latest` and clones the repo to `~/omadora`.
+   `OMADORA_TAG=45` pins a Fedora release; `OMADORA_CHECKOUT=0` skips the clone.
+3. Log into the **Sway** session. On first login, `omadora-setup.service` links the dotfiles
    and enables the services, and Quickshell and the phone daemon start.
 4. Bring your own data over from the old machine, as a separate step:
 
    ```bash
-   fedcandor-migrate --dry-run you@old-laptop   # see what would come over
-   fedcandor-migrate you@old-laptop             # theme, settings, models, Firefox, SSH/GPG keys
+   omadora-migrate --dry-run you@old-laptop   # see what would come over
+   omadora-migrate you@old-laptop             # theme, settings, models, Firefox, SSH/GPG keys
    ```
 
    The phone pairing stays on the old machine unless you add `--phone` (which moves it); otherwise
    pair fresh with "Pair Phone" in the launcher.
 
-The image ships `fedcandor-phone` and `whisper-cli` prebuilt (built in throwaway stages of the
-Containerfile), so no compilers are installed. Building either from `~/fedcandor` puts it in
+The image ships `omadora-phone` and `whisper-cli` prebuilt (built in throwaway stages of the
+Containerfile), so no compilers are installed. Building either from `~/omadora` puts it in
 `~/.local/bin`, which takes precedence.
 
 Without `bootstrap.sh`, the manual route is an unverified rebase, then a signed one:
 
 ```bash
-rpm-ostree rebase ostree-unverified-registry:ghcr.io/etmartinkazoo/fedcandor:latest
+rpm-ostree rebase ostree-unverified-registry:ghcr.io/etmartinkazoo/omadora:latest
 systemctl reboot
-rpm-ostree rebase ostree-image-signed:docker://ghcr.io/etmartinkazoo/fedcandor:latest
+rpm-ostree rebase ostree-image-signed:docker://ghcr.io/etmartinkazoo/omadora:latest
 systemctl reboot
 ```
 
@@ -66,14 +66,14 @@ Updates are downloaded and staged automatically by `rpm-ostreed-automatic.timer`
 ## Customizing
 
 - Per-machine sway settings: `~/.config/sway/config.d/80-local.conf`.
-- To hack on the desktop itself, work in `~/fedcandor` (bootstrap.sh clones it). The first login
+- To hack on the desktop itself, work in `~/omadora` (bootstrap.sh clones it). The first login
   links from the checkout; after that, re-run `./install.sh --user-only dotfiles session phone`
   there yourself, and image updates leave your links alone.
 
 ## Building and publishing (maintainers)
 
 CI (`.github/workflows/build-image.yml`) builds on every push to `main` and daily, to pick up
-Fedora's base image updates. It pushes `ghcr.io/etmartinkazoo/fedcandor:{latest,45,45-YYYYMMDD}`
+Fedora's base image updates. It pushes `ghcr.io/etmartinkazoo/omadora:{latest,45,45-YYYYMMDD}`
 and signs the digest.
 
 One-time setup:
@@ -85,11 +85,11 @@ gh secret set COSIGN_PRIVATE_KEY < cosign.key   # then delete cosign.key, or kee
 gh secret set COSIGN_PASSWORD                   # the password you chose
 ```
 
-Then make the GHCR package public: GitHub → Packages → fedcandor → Package settings.
+Then make the GHCR package public: GitHub → Packages → omadora → Package settings.
 
 Local build (podman is preinstalled on Atomic):
 
 ```bash
-podman build -f atomic/Containerfile -t localhost/fedcandor .
-sudo bootc switch --transport containers-storage localhost/fedcandor   # test it on a spare machine/VM
+podman build -f atomic/Containerfile -t localhost/omadora .
+sudo bootc switch --transport containers-storage localhost/omadora   # test it on a spare machine/VM
 ```

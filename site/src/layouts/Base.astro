@@ -8,7 +8,7 @@ interface Props {
 	description: string;
 }
 const { title, description } = Astro.props;
-const fullTitle = title === 'fedcandor' ? 'fedcandor: stable, secure, beautiful' : `${title} · fedcandor`;
+const fullTitle = title === 'omadora' ? 'omadora: stable, secure, beautiful' : `${title} · omadora`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(url('og.png'), Astro.site);
 const path = Astro.url.pathname;
@@ -37,7 +37,7 @@ const path = Astro.url.pathname;
 		<a class="skip" href="#main">Skip to content</a>
 		<header class="site-header">
 			<div class="container bar">
-				<a class="home" href={url()} aria-label="fedcandor home"><Logo size={30} /></a>
+				<a class="home" href={url()} aria-label="omadora home"><Logo size={30} /></a>
 				<nav aria-label="Main">
 					<a href={url('docs/introduction/')} aria-current={path.includes('/docs/') ? 'page' : undefined}>Docs</a>
 					<a href={url('docs/install-atomic/')}>Install</a>
@@ -64,7 +64,7 @@ const path = Astro.url.pathname;
 					<a href={REPO}>Source</a>
 				</div>
 				<p class="legal">
-					fedcandor is an independent project, not affiliated with or endorsed by the Fedora Project or Red Hat.
+					omadora is an independent project, not affiliated with or endorsed by the Fedora Project or Red Hat.
 					Fedora is a trademark of Red Hat, Inc.
 				</p>
 			</div>

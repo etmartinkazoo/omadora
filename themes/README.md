@@ -1,6 +1,6 @@
 # Themes
 
-A fedcandor theme is a folder with:
+A omadora theme is a folder with:
 
 ```
 <name>/
@@ -13,12 +13,12 @@ A fedcandor theme is a folder with:
 themes work as-is:
 
 ```bash
-fedcandor-theme install omarchy:gruvbox              # a theme from Omarchy's repository
-fedcandor-theme install https://github.com/<user>/<omarchy-theme-repo>
-fedcandor-theme set gruvbox
+omadora-theme install omarchy:gruvbox              # a theme from Omarchy's repository
+omadora-theme install https://github.com/<user>/<omarchy-theme-repo>
+omadora-theme set gruvbox
 ```
 
-Installed themes go to `~/.local/share/fedcandor/themes/`. A theme there with the same name as
+Installed themes go to `~/.local/share/omadora/themes/`. A theme there with the same name as
 a built-in one replaces it.
 
 ## Palette keys
@@ -33,8 +33,8 @@ following Omarchy's rules, so minimal and older themes work too.
 
 Built-in templates cover Quickshell, sway, kitty, foot, Neovim, GTK and Firefox, plus a
 resolved `colors.toml` that terminal apps such as tern read.
-`fedcandor-theme set` renders every file in `templates/` (overridable per user in
-`~/.config/fedcandor/templates/`) with the palette:
+`omadora-theme set` renders every file in `templates/` (overridable per user in
+`~/.config/omadora/templates/`) with the palette:
 
 | Token | Example output |
 |-------|----------------|
@@ -46,7 +46,7 @@ resolved `colors.toml` that terminal apps such as tern read.
 
 ## Credits and licenses
 
-- **candor**, **candor-light**, **graphite** and **graphite-light** are original to fedcandor.
+- **candor**, **candor-light**, **graphite** and **graphite-light** are original to omadora.
 - **tokyo-night**, **catppuccin** and **flexoki-light** palettes and wallpapers come from
   [Omarchy](https://github.com/omacom/omarchy) (MIT License, © David Heinemeier Hansson and
   contributors). The underlying color schemes are

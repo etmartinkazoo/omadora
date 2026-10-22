@@ -1,9 +1,9 @@
-# Build tools for the parts fedcandor compiles: the phone daemon (Go) and
+# Build tools for the parts omadora compiles: the phone daemon (Go) and
 # whisper.cpp for dictation. Installed with packages/fedora.txt on regular
 # Fedora; the Atomic image builds both in throwaway stages and ships only the
 # binaries (atomic/Containerfile), so none of this is in the image.
 
-golang                   # fedcandor-phone (steps/70-phone.sh)
+golang                   # omadora-phone (steps/70-phone.sh)
 gcc-c++                  # whisper.cpp (steps/75-dictation.sh)
 cmake
 vulkan-headers           # whisper.cpp on the GPU (Vulkan)

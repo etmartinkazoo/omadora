@@ -12,7 +12,10 @@ on:
 
 env:
   FEDORA_VERSION: '45'
-  IMAGE_NAME: fedcandor
+  IMAGE_NAME: omadora
+  # The image's name before the rename. Installs from then still pull it until
+  # omadora-rename-image.service moves them; drop this once they all have.
+  OLD_IMAGE_NAME: fedcandor
   REGISTRY: ghcr.io/${{ github.repository_owner }}
 
 concurrency:
@@ -86,3 +89,17 @@ jobs:
             exit 0
           fi
           cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${IMAGE}@${DIGEST}"
+
+      - name: Publish under the old name
+        if: github.event_name != 'pull_request'
+        env:
+          DIGEST: ${{ steps.push.outputs.digest }}
+          REGISTRY_LC: ${{ steps.meta.outputs.registry }}
+          TAGS: ${{ steps.meta.outputs.tags }}
+          CREDS: ${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for tag in ${TAGS}; do
+            skopeo copy --all --preserve-digests --src-creds "${CREDS}" --dest-creds "${CREDS}" \
+              "docker://${REGISTRY_LC}/${IMAGE_NAME}@${DIGEST}" \
+              "docker://${REGISTRY_LC}/${OLD_IMAGE_NAME}:${tag}"
+          done

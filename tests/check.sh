@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# fedcandor check: catch a broken desktop before it reaches anyone.
+# omadora check: catch a broken desktop before it reaches anyone.
 #
 #   tests/check.sh                     static checks + full shell run
 #   tests/check.sh --quick             static checks + shell load in each mode (pre-commit)
@@ -37,7 +37,7 @@ pass() { printf '%s ok%s %s\n' "$green" "$off" "$*"; }
 fail() { printf '%sFAIL%s %s\n' "$red" "$off" "$*"; failures=$((failures + 1)); }
 
 # ---------------------------------------------------------------- static ----
-if [ -z "${FEDCANDOR_CHECK_INNER:-}" ]; then
+if [ -z "${OMADORA_CHECK_INNER:-}" ]; then
     bad=0
     while IFS= read -r -d '' f; do
         if head -1 "$f" | grep -q 'bash\|/sh'; then
@@ -52,7 +52,7 @@ if [ -z "${FEDCANDOR_CHECK_INNER:-}" ]; then
     bash -n "$ROOT/bootstrap.sh" "$ROOT/atomic/build.sh" "$ROOT/atomic/user-setup.sh" 2>/dev/null \
         && pass "bootstrap and image scripts parse" || fail "shell syntax: bootstrap.sh or atomic/*.sh"
 
-    # The image builds fedcandor-phone with the Go version phone/go.mod asks for.
+    # The image builds omadora-phone with the Go version phone/go.mod asks for.
     gomod=$(sed -n 's/^go //p' "$ROOT/phone/go.mod")
     goimg=$(sed -n 's/^ARG GO_VERSION=//p' "$ROOT/atomic/Containerfile")
     [ "$gomod" = "$goimg" ] && pass "image Go version ($goimg)" \
@@ -73,15 +73,15 @@ if [ -z "${FEDCANDOR_CHECK_INNER:-}" ]; then
     args=(--themes "$THEMES")
     [ $QUICK = 1 ] && args+=(--quick)
     [ -n "$SHOTS" ] && args+=(--screenshots "$SHOTS")
-    FEDCANDOR_CHECK_INNER=1 FEDCANDOR_CHECK_FAILURES=$failures REAL_HOME=$HOME \
+    OMADORA_CHECK_INNER=1 OMADORA_CHECK_FAILURES=$failures REAL_HOME=$HOME \
         dbus-run-session -- "$0" "${args[@]}" 2>/dev/null
     exit $?
 fi
 
-failures=${FEDCANDOR_CHECK_FAILURES:-0}
+failures=${OMADORA_CHECK_FAILURES:-0}
 
 # ----------------------------------------------------- isolated session ----
-T=$(mktemp -d "${TMPDIR:-/tmp}/fedcandor-check.XXXXXX")
+T=$(mktemp -d "${TMPDIR:-/tmp}/omadora-check.XXXXXX")
 cleanup() {
     local status=$?
     set +e
@@ -101,9 +101,9 @@ export XDG_DATA_HOME="$HOME/.local/share" XDG_CACHE_HOME="$HOME/.cache"
 export XDG_RUNTIME_DIR="$T/run"
 # Icons and fonts from the real home (read only), so screenshots look right
 export XDG_DATA_DIRS="$REAL_HOME/.local/share:/usr/local/share:/usr/share"
-export FEDCANDOR_ROOT="$ROOT"
+export OMADORA_ROOT="$ROOT"
 unset WAYLAND_DISPLAY SWAYSOCK DISPLAY I3SOCK
-mkdir -p "$HOME/.local/bin" "$XDG_CONFIG_HOME" "$XDG_DATA_HOME" "$XDG_STATE_HOME/fedcandor"
+mkdir -p "$HOME/.local/bin" "$XDG_CONFIG_HOME" "$XDG_DATA_HOME" "$XDG_STATE_HOME/omadora"
 mkdir -m 700 "$XDG_RUNTIME_DIR"
 [ -d "$REAL_HOME/.local/share/fonts" ] && ln -s "$REAL_HOME/.local/share/fonts" "$XDG_DATA_HOME/fonts"
 # Not the Bluetooth pairing agent: it registers with the real system bus.
@@ -132,7 +132,7 @@ pass "headless sway ($WAYLAND_DISPLAY)"
 bad=0
 for d in "$ROOT"/themes/*/; do
     t=$(basename "$d")
-    fedcandor-theme set "$t" >"$T/theme.log" 2>&1 || { fail "theme $t:"; sed 's/^/    /' "$T/theme.log" | tail -3; bad=1; }
+    omadora-theme set "$t" >"$T/theme.log" 2>&1 || { fail "theme $t:"; sed 's/^/    /' "$T/theme.log" | tail -3; bad=1; }
 done
 [ $bad -eq 0 ] && pass "every built-in theme applies"
 
@@ -144,8 +144,8 @@ fi
 
 # -------------------------------------------------------------- shell ----
 first_theme=${THEMES%% *}
-fedcandor-theme set "$first_theme" >/dev/null 2>&1
-echo tiling >"$XDG_STATE_HOME/fedcandor/mode"
+omadora-theme set "$first_theme" >/dev/null 2>&1
+echo tiling >"$XDG_STATE_HOME/omadora/mode"
 qs -p "$QS_DIR" >"$T/qs.log" 2>&1 &
 QS_PID=$!
 for _ in $(seq 100); do
@@ -167,10 +167,10 @@ notifications:open:hide system:open:hide audio:open:hide wifi:open:hide bluetoot
 overview:open:hide switcher:apps:hide start:open:hide updates:open:hide displays:open:hide chat:open:hide"
 
 for theme in $THEMES; do
-    fedcandor-theme set "$theme" >/dev/null 2>&1 || fail "theme $theme"
+    omadora-theme set "$theme" >/dev/null 2>&1 || fail "theme $theme"
     sleep 0.5
     for mode in tiling windows macos; do
-        echo "$mode" >"$XDG_STATE_HOME/fedcandor/mode"
+        echo "$mode" >"$XDG_STATE_HOME/omadora/mode"
         sleep 0.8
         shot "$theme-$mode"
         [ $QUICK = 1 ] && continue
@@ -201,8 +201,8 @@ def walk(n):
 walk(json.load(sys.stdin))'
 }
 if [ $QUICK = 0 ] && [ "$(frames | wc -l)" -ge 2 ]; then
-    echo tiling >"$XDG_STATE_HOME/fedcandor/mode"
-    mode_to() { local out; out=$(fedcandor-mode set "$1" 2>&1) || { fail "fedcandor-mode set $1:"; echo "$out" | sed "s/^/    /"; return 1; }; }
+    echo tiling >"$XDG_STATE_HOME/omadora/mode"
+    mode_to() { local out; out=$(omadora-mode set "$1" 2>&1) || { fail "omadora-mode set $1:"; echo "$out" | sed "s/^/    /"; return 1; }; }
     mode_to tiling; sleep 0.3
     before=$(frames | awk '{print $1, $3, $4, $5, $6}')
     mode_to windows; sleep 0.5
@@ -326,15 +326,15 @@ if [ $QUICK = 0 ]; then
     pos() { swaymsg -r -t get_outputs | python3 -I -c 'import json,sys; o=[x for x in json.load(sys.stdin) if x["name"]==sys.argv[1]]; print(o[0]["rect"]["x"], o[0]["rect"]["y"]) if o else print("none")' "$1"; }
     swaymsg -q create_output; sleep 0.5
     second=$(swaymsg -r -t get_outputs | python3 -I -c 'import json,sys; print([o["name"] for o in json.load(sys.stdin) if o["name"] != "HEADLESS-1"][0])')
-    fedcandor-displays apply "[{\"name\": \"HEADLESS-1\", \"enabled\": true, \"mode\": \"\", \"scale\": 1, \"transform\": \"normal\", \"x\": 0, \"y\": 0},
+    omadora-displays apply "[{\"name\": \"HEADLESS-1\", \"enabled\": true, \"mode\": \"\", \"scale\": 1, \"transform\": \"normal\", \"x\": 0, \"y\": 0},
         {\"name\": \"$second\", \"enabled\": true, \"mode\": \"\", \"scale\": 1, \"transform\": \"normal\", \"x\": 1280, \"y\": 0}]"
     sleep 0.3
     [ "$(pos "$second")" = "1280 0" ] && pass "displays: apply arranges screens" || fail "displays: $second at $(pos "$second"), expected 1280 0"
-    fedcandor-displays save
+    omadora-displays save
     swaymsg -q output "$second" position 0 800; sleep 0.3
-    fedcandor-displays restore; sleep 0.3
+    omadora-displays restore; sleep 0.3
     [ "$(pos "$second")" = "1280 0" ] && pass "displays: profile restores the saved layout" || fail "displays: restore left $second at $(pos "$second")"
-    if fedcandor-displays apply '[{"name": "HEADLESS-1", "enabled": false}]' 2>/dev/null; then
+    if omadora-displays apply '[{"name": "HEADLESS-1", "enabled": false}]' 2>/dev/null; then
         fail "displays: allowed turning every screen off"
     else
         pass "displays: refuses to turn every screen off"

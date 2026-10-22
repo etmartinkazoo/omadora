@@ -1,17 +1,17 @@
 "use strict";
 
-// fedcandor Theme
+// omadora Theme
 // ---------------
-// fedcandor-firefox-host (a native messaging host) sends the current theme's
+// omadora-firefox-host (a native messaging host) sends the current theme's
 // rendered firefox-theme.json when we connect, and again every time
-// `fedcandor-theme set` changes it. Each one is applied with the theme API,
+// `omadora-theme set` changes it. Each one is applied with the theme API,
 // which covers the browser chrome, menus, sidebar, the new tab page and the
 // light/dark preference web pages see.
 //
 // The background page is persistent (MV2) so the port stays open; if the host
 // exits or is missing, we reconnect with backoff.
 
-const HOST = "fedcandor_theme";
+const HOST = "omadora_theme";
 let delay = 1000;
 
 function connect() {
@@ -19,7 +19,7 @@ function connect() {
   try {
     port = browser.runtime.connectNative(HOST);
   } catch (error) {
-    console.error("[fedcandor-theme] can't start the native host:", error);
+    console.error("[omadora-theme] can't start the native host:", error);
     return retry();
   }
   port.onMessage.addListener(async (theme) => {
@@ -30,12 +30,12 @@ function connect() {
     try {
       await browser.theme.update({ colors: theme.colors, properties: theme.properties || {} });
     } catch (error) {
-      console.error("[fedcandor-theme] theme.update failed:", error);
+      console.error("[omadora-theme] theme.update failed:", error);
     }
   });
   port.onDisconnect.addListener((p) => {
     if (p.error) {
-      console.warn("[fedcandor-theme] native host disconnected:", p.error.message);
+      console.warn("[omadora-theme] native host disconnected:", p.error.message);
     }
     retry();
   });

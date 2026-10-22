@@ -4,7 +4,7 @@ import Quickshell
 import Quickshell.Wayland
 
 // Desktop wallpaper, drawn on the background layer of every screen.
-// Shows the theme's wallpaper image (or your own: `fedcandor-theme wallpaper
+// Shows the theme's wallpaper image (or your own: `omadora-theme wallpaper
 // PATH`); themes without images get a generated one from their palette: crisp
 // at any resolution and nothing to download.
 Scope {
@@ -18,7 +18,7 @@ Scope {
             anchors { top: true; bottom: true; left: true; right: true }
             exclusionMode: ExclusionMode.Ignore
             WlrLayershell.layer: WlrLayer.Background
-            WlrLayershell.namespace: "fedcandor-wallpaper"
+            WlrLayershell.namespace: "omadora-wallpaper"
             color: Theme.darkerBackground
 
             // Generated wallpaper
@@ -68,7 +68,7 @@ Scope {
                     radius: Math.max(win.width, win.height) * 0.5
                 }
 
-                // The fedcandor mark as a faint outline: one tall tile, two stacked.
+                // The omadora mark as a faint outline: one tall tile, two stacked.
                 Item {
                     readonly property real u: Math.min(win.width, win.height) * 0.0072
                     width: 64 * u

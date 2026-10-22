@@ -1,4 +1,4 @@
-module fedcandor/phone
+module omadora/phone
 
 go 1.27.2
 

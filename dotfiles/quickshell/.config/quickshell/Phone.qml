@@ -9,8 +9,8 @@ import "Fuzzy.js" as Fuzzy
 
 // Phone panel: texts (SMS + RCS through Google Messages) and calls (the phone
 // as a Bluetooth hands-free gateway). Everything comes from the
-// fedcandor-phone daemon over $XDG_RUNTIME_DIR/fedcandor-phone.sock
-// (protocol: fedcandor/phone/PROTOCOL.md). Slides in from the right; Super+P.
+// omadora-phone daemon over $XDG_RUNTIME_DIR/omadora-phone.sock
+// (protocol: omadora/phone/PROTOCOL.md). Slides in from the right; Super+P.
 Scope {
     id: phone
 
@@ -115,7 +115,7 @@ Scope {
     // quiet: the caller shows errors itself (no notice in the hint line).
     function request(cmd, fields, cb, quiet) {
         if (!daemonUp || !sock) {
-            if (cb) cb(false, {}, "fedcandor-phone isn't running");
+            if (cb) cb(false, {}, "omadora-phone isn't running");
             return;
         }
         const msg = Object.assign({ cmd: cmd, id: nextId }, fields || {});
@@ -330,7 +330,7 @@ Scope {
     }
 
     // ---- Voice drafts ----
-    // fedcandor-dictate turns "text Sarah I'll be home at six" into
+    // omadora-dictate turns "text Sarah I'll be home at six" into
     // voiceText("Sarah I'll be home at six"): find the person, open their thread
     // and put the message in the compose box. Never sent automatically.
     property string voiceDraft: ""
@@ -1489,7 +1489,7 @@ Scope {
         active: true
         component: Socket {
             id: socket
-            path: (Quickshell.env("XDG_RUNTIME_DIR") || "/run/user/1000") + "/fedcandor-phone.sock"
+            path: (Quickshell.env("XDG_RUNTIME_DIR") || "/run/user/1000") + "/omadora-phone.sock"
             connected: true
             parser: SplitParser {
                 onRead: data => phone.handleLine(data)
@@ -2083,7 +2083,7 @@ Scope {
                             Text {
                                 width: parent.width
                                 horizontalAlignment: Text.AlignHCenter
-                                text: "fedcandor-phone isn't running."
+                                text: "omadora-phone isn't running."
                                 color: Theme.textPrimary
                                 font.family: Theme.fontFamily
                                 font.pixelSize: Theme.fontNormal
@@ -2094,7 +2094,7 @@ Scope {
                                 tint: Theme.accent
                                 filled: true
                                 onClicked: {
-                                    ShellState.launch(["systemctl", "--user", "start", "fedcandor-phone"]);
+                                    ShellState.launch(["systemctl", "--user", "start", "omadora-phone"]);
                                     phone.reconnect();
                                 }
                             }
@@ -2102,7 +2102,7 @@ Scope {
                                 width: parent.width
                                 horizontalAlignment: Text.AlignHCenter
                                 wrapMode: Text.WordWrap
-                                text: "systemctl --user start fedcandor-phone"
+                                text: "systemctl --user start omadora-phone"
                                 color: Theme.textMuted
                                 font.family: Theme.fontFamily
                                 font.pixelSize: Theme.fontSmall - 1

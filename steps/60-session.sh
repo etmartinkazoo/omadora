@@ -8,8 +8,8 @@ local_conf="$HOME/.config/sway/config.d/80-local.conf"
 if [ ! -e "$local_conf" ]; then
     mkdir -p "$(dirname "$local_conf")"
     cat > "$local_conf" <<'CONF'
-# Per-machine sway settings (not tracked by fedcandor). Examples:
-# (wallpaper: use `fedcandor-theme wallpaper PATH`; sway's own bg is off)
+# Per-machine sway settings (not tracked by omadora). Examples:
+# (wallpaper: use `omadora-theme wallpaper PATH`; sway's own bg is off)
 # output eDP-1 scale 1.5
 # input "type:keyboard" { xkb_layout us; xkb_options ctrl:nocaps }
 CONF
@@ -17,8 +17,8 @@ CONF
 fi
 
 # Render the current theme (candor on first run) for sway, foot, GTK, Quickshell.
-"$HOME/.local/bin/fedcandor-theme" refresh || warn "fedcandor-theme refresh failed"
-ok "theme: $("$HOME/.local/bin/fedcandor-theme" current)"
+"$HOME/.local/bin/omadora-theme" refresh || warn "omadora-theme refresh failed"
+ok "theme: $("$HOME/.local/bin/omadora-theme" current)"
 
 systemctl --user daemon-reload
 systemctl --user enable quickshell.service >/dev/null
@@ -31,10 +31,10 @@ if [ -n "${SWAYSOCK:-}" ] && command -v swaymsg >/dev/null 2>&1; then
     if ! systemctl --user is-active --quiet quickshell.service; then
         qs kill >/dev/null 2>&1 || true
     fi
-    # --no-block: this step also runs from fedcandor-setup.service, which is
+    # --no-block: this step also runs from omadora-setup.service, which is
     # ordered before quickshell.service; waiting here would deadlock.
     systemctl --user --no-block restart quickshell.service
     ok "session updated"
 else
-    info "Not inside sway: log into a sway session to start using fedcandor."
+    info "Not inside sway: log into a sway session to start using omadora."
 fi

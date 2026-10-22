@@ -72,9 +72,9 @@ Scope {
         { title: "Screenshot or recording", words: "screenshot capture record screen recording", glyph: "󰄀", popup: "screenshot" },
         { title: "All windows", words: "overview mission control task view windows expose", glyph: "󰕰", popup: "overview" },
         { title: "Quick settings", words: "settings quick brightness", glyph: "󰒓", popup: "quick" },
-        { title: "Desktop mode: Tiling", words: "mode tiling layout sway", glyph: "󰕰", cmd: ["fedcandor-mode", "set", "tiling"] },
-        { title: "Desktop mode: Windows", words: "mode windows taskbar start menu floating", glyph: "󰖲", cmd: ["fedcandor-mode", "set", "windows"] },
-        { title: "Desktop mode: macOS", words: "mode macos mac dock top bar floating", glyph: "󰀵", cmd: ["fedcandor-mode", "set", "macos"] },
+        { title: "Desktop mode: Tiling", words: "mode tiling layout sway", glyph: "󰕰", cmd: ["omadora-mode", "set", "tiling"] },
+        { title: "Desktop mode: Windows", words: "mode windows taskbar start menu floating", glyph: "󰖲", cmd: ["omadora-mode", "set", "windows"] },
+        { title: "Desktop mode: macOS", words: "mode macos mac dock top bar floating", glyph: "󰀵", cmd: ["omadora-mode", "set", "macos"] },
         { title: "Battery and power", words: "battery power profile performance saver", glyph: "󰁹", popup: "system" },
         { title: "Lock screen", words: "lock screen away", glyph: "󰌾", cmd: ["loginctl", "lock-session"] },
         { title: "Suspend", words: "suspend sleep", glyph: "󰤄", cmd: ["systemctl", "suspend"] },
@@ -160,7 +160,7 @@ Scope {
             fileProc.command = ["sh", "-c",
                 "find \"$1\" -maxdepth 5 \\( -name '.*' -o -name node_modules -o -name __pycache__ -o -name target \\) -prune "
                 + "-o -iname \"*$2*\" -print 2>/dev/null | head -n 40",
-                "fedcandor-find", launcherScope.home, fileProc.query.replace(/[\\*?\[\]]/g, "\\$&")];
+                "omadora-find", launcherScope.home, fileProc.query.replace(/[\\*?\[\]]/g, "\\$&")];
             fileProc.running = true;
         }
     }
