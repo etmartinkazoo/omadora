@@ -33,6 +33,7 @@ for arg in "$@"; do
 done
 
 [ -r /etc/fedora-release ] || warn "this doesn't look like Fedora; continuing anyway"
+[ ! -e /run/ostree-booted ] || die "Fedora Atomic isn't supported: omadora needs a regular Fedora 45 install"
 [ "$(id -u)" -ne 0 ] || die "run as your normal user; [root] steps use sudo themselves"
 
 ran=0

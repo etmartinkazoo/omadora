@@ -6,25 +6,16 @@ set -euo pipefail
 source "$(dirname "$0")/../lib/common.sh"
 
 # --- Automatic security updates -------------------------------------------
-if is_atomic; then
-    # Atomic images update as a whole; rpm-ostreed stages them automatically.
-    info "Fedora Atomic: enabling automatic staged image updates"
-    if ! grep -q '^AutomaticUpdatePolicy=stage' /etc/rpm-ostreed.conf 2>/dev/null; then
-        as_root sed -i 's/^#\?AutomaticUpdatePolicy=.*/AutomaticUpdatePolicy=stage/' /etc/rpm-ostreed.conf
-    fi
-    as_root systemctl enable --now rpm-ostreed-automatic.timer
-    ok "image updates are downloaded and staged automatically (applied on reboot)"
-else
-    need_cmd dnf
-    if ! rpm -q dnf5-plugin-automatic >/dev/null 2>&1; then
-        info "Installing dnf5-plugin-automatic"
-        as_root dnf install -y dnf5-plugin-automatic
-    fi
-    info "Configuring automatic *security* updates (/etc/dnf/automatic.conf)"
-    if [ -f /etc/dnf/automatic.conf ] && ! grep -q 'omadora' /etc/dnf/automatic.conf; then
-        as_root cp /etc/dnf/automatic.conf "/etc/dnf/automatic.conf.bak-$(date +%Y%m%d%H%M%S)"
-    fi
-    as_root tee /etc/dnf/automatic.conf >/dev/null <<'CONF'
+need_cmd dnf
+if ! rpm -q dnf5-plugin-automatic >/dev/null 2>&1; then
+    info "Installing dnf5-plugin-automatic"
+    as_root dnf install -y dnf5-plugin-automatic
+fi
+info "Configuring automatic *security* updates (/etc/dnf/automatic.conf)"
+if [ -f /etc/dnf/automatic.conf ] && ! grep -q 'omadora' /etc/dnf/automatic.conf; then
+    as_root cp /etc/dnf/automatic.conf "/etc/dnf/automatic.conf.bak-$(date +%Y%m%d%H%M%S)"
+fi
+as_root tee /etc/dnf/automatic.conf >/dev/null <<'CONF'
 # Managed by omadora (steps/20-system-security.sh).
 # Security updates only, applied automatically; never reboots on its own.
 [commands]
@@ -37,11 +28,10 @@ reboot = never
 [emitters]
 emit_via = stdio
 CONF
-    as_root systemctl enable --now dnf5-automatic.timer
-    ok "dnf5-automatic.timer enabled (security updates)"
-    if dnf repolist --enabled 2>/dev/null | grep -q '^updates-testing'; then
-        warn "updates-testing is enabled: automatic updates will include testing packages."
-    fi
+as_root systemctl enable --now dnf5-automatic.timer
+ok "dnf5-automatic.timer enabled (security updates)"
+if dnf repolist --enabled 2>/dev/null | grep -q '^updates-testing'; then
+    warn "updates-testing is enabled: automatic updates will include testing packages."
 fi
 
 # --- Firewall ---------------------------------------------------------------

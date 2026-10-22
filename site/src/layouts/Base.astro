@@ -40,7 +40,7 @@ const path = Astro.url.pathname;
 				<a class="home" href={url()} aria-label="omadora home"><Logo size={30} /></a>
 				<nav aria-label="Main">
 					<a href={url('docs/introduction/')} aria-current={path.includes('/docs/') ? 'page' : undefined}>Docs</a>
-					<a href={url('docs/install-atomic/')}>Install</a>
+					<a href={url('docs/install/')}>Install</a>
 					<a href={url('docs/security/')}>Security</a>
 					<a href={REPO} class="gh">GitHub</a>
 				</nav>
@@ -55,7 +55,7 @@ const path = Astro.url.pathname;
 			<div class="container foot">
 				<div>
 					<Logo size={24} />
-					<p class="tag">Fedora Atomic + sway + Quickshell. No compromises.</p>
+					<p class="tag">Fedora + sway + Quickshell. No compromises.</p>
 				</div>
 				<div class="links">
 					<a href={url('docs/introduction/')}>Docs</a>

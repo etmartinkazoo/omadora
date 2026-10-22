@@ -97,10 +97,7 @@ unless you plug in. <kbd>M</kbd> opens a task manager (`top`).
 
 ## Updates
 
-Quick Settings → **Updates** (<kbd>U</kbd>). On the signed image, the next image downloads in the
-background; the panel shows it as ready, and you choose when to restart into it. The previous image
-stays one restart away: **Roll back** switches to it. On a regular Fedora install, the panel counts
-what dnf has, and **Update** / **Undo last** open a terminal running `sudo dnf upgrade` /
+Quick Settings → **Updates** (<kbd>U</kbd>). The panel counts what dnf has, and **Update** / **Undo last** open a terminal running `sudo dnf upgrade` /
 `sudo dnf history undo last`, so you see and confirm the changes. The shell checks every 6 hours,
 notifies once when something new is ready, and shows 󰚰 on the Quick Settings pill.
 

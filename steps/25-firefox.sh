@@ -7,12 +7,8 @@ source "$(dirname "$0")/../lib/common.sh"
 # extension directory, which Fedora's build leaves open to unsigned ones. The
 # extension lives there; its native messaging host (also system-wide) streams
 # each user's current theme to it.
-if is_atomic && [ "$(id -u)" -ne 0 ]; then
-    info "Fedora Atomic detected: the Firefox extension comes with the omadora image."
-    exit 0
-fi
 
-PREFIX="${OMADORA_FIREFOX_PREFIX:-/usr/local}"
+PREFIX=/usr/local
 LIBDIR=/usr/lib64
 [ -d "$LIBDIR" ] || LIBDIR=/usr/lib
 FIREFOX_ID="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"

@@ -11,11 +11,6 @@ if ! command -v fprintd-list >/dev/null || fprintd-list "$user" 2>&1 | grep -q '
     exit 0
 fi
 
-if is_atomic; then
-    info "Fedora Atomic: enable fingerprint for admin prompts with: authselect enable-feature with-fingerprint"
-    exit 0
-fi
-
 if command -v authselect >/dev/null; then
     as_root authselect enable-feature with-fingerprint
     ok "Fingerprint enabled for admin prompts and sudo (enroll with: fprintd-enroll)"

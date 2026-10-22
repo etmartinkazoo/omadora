@@ -1,6 +1,6 @@
 ---
 title: Introduction
-description: What omadora is, who it's for, and why it's built on Fedora Atomic, sway and Quickshell.
+description: What omadora is, who it's for, and why it's built on Fedora, sway and Quickshell.
 section: Start here
 order: 1
 ---
@@ -10,7 +10,7 @@ mature open-source projects, and each one covers one side of the job:
 
 | Layer | Project | What it gives you |
 |-------|---------|-------------------|
-| Operating system | **Fedora Atomic** | Stability and security. The OS is an image: updates apply in one step or not at all, and the previous version is always one reboot away. |
+| Operating system | **Fedora 45** | Stability and security. Fixed releases, SELinux, and security updates that install automatically. |
 | Window manager | **sway** | Productivity. Keyboard-first tiling: every window has a place, nothing overlaps, nothing needs dragging. |
 | Desktop shell | **Quickshell** | Beauty. One coherent, themed shell for the bar, launcher, notifications, clipboard, screenshots, Wi-Fi, Bluetooth, audio, lock screen and more. |
 
@@ -21,13 +21,13 @@ have to choose any more.
 ## Who it's for
 
 - **Business owners** who want company machines that stay up, stay patched and stay out of the way.
-- **Admins** who want one signed image to roll out, pin, test and roll back across a whole team.
+- **Admins** who want every machine on a team set up the same way, from one repository.
 - **Employees** who just want a fast, calm desktop that's the same every morning.
 - **Power users** who live on the keyboard and want every action a keystroke away.
 
 ## Principles
 
-1. **Boring where it matters.** Fedora's fixed releases and an image-based OS, not a rolling distribution.
+1. **Boring where it matters.** Fedora's fixed releases, not a rolling distribution.
 2. **Secure by default.** Encryption, SELinux, a closed firewall, automatic updates, and deny-by-default
    Bluetooth pairing, with no setup required. See [Security](../security/).
 3. **Keyboard first, mouse friendly.** Everything has a shortcut, and everything is also clickable.
@@ -36,13 +36,12 @@ have to choose any more.
 
 ## The name
 
-**omadora** is *Fedora* + *candor*. In Latin, *candor* means brilliance or radiance (literally,
-dazzling whiteness), and also sincerity and openness. Both meanings apply: a desktop that's a
-pleasure to look at, and one that's honest about what it does. Every line of it is open and auditable.
+omadora was formerly called **fedcandor**: *Fedora* + *candor*. In Latin, *candor* means
+brilliance or radiance (literally, dazzling whiteness), and also sincerity and openness. Both
+meanings still apply: a desktop that's a pleasure to look at, and one that's honest about what it
+does. Every line of it is open and auditable.
 
-## Two ways to run it
+## Getting it
 
-- **[Fedora Atomic](../install-atomic/)** (recommended): the whole desktop as a signed, bootable
-  image, with atomic updates and rollback.
-- **[Fedora Workstation](../install-workstation/)**: the same desktop installed on a regular Fedora
-  system by an idempotent script.
+omadora installs on a regular Fedora 45 system (the Sway spin or any other Fedora 45 install) with
+one idempotent script. See [Install](../install/).

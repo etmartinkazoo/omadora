@@ -7,15 +7,15 @@ order: 2
 
 ## Is omadora a Linux distribution?
 
-No. It's a desktop built on Fedora. On Atomic, it's a Fedora Sway Atomic image with the desktop
-and security defaults built in. On Workstation, it's an installer for your existing Fedora. Fedora
-remains the operating system, with Fedora's packages and Fedora's security team.
+No. It's a desktop built on Fedora: an installer that sets up the desktop and its security defaults
+on a regular Fedora 45 system. Fedora remains the operating system, with Fedora's packages and
+Fedora's security team.
 
 ## How is this different from Omarchy and other "riced" setups?
 
 Most opinionated desktops are built on rolling-release distributions and fast-moving compositors:
 exciting, but they ask you to absorb breakage. omadora makes the opposite trade. It runs on
-Fedora's fixed releases and an image-based OS that rolls back, with sway, whose configuration has
+Fedora's fixed releases, with sway, whose configuration has
 stayed compatible for a decade. You get the polish without the maintenance.
 
 ## Why sway instead of Hyprland or GNOME?
@@ -24,9 +24,9 @@ sway is stable, fast and conservative: its configuration language is i3's, and i
 anything between versions. Tiling is what makes a keyboard-first workflow fast, and Quickshell adds
 the polish that tiling setups usually lack.
 
-## Can I use Flatpak apps, Chrome, Slack, Zoom, VS Code…?
+## Can I use Chrome, Slack, Zoom, VS Code…?
 
-Yes. On Atomic, install them from Flathub. Screen sharing works through the desktop portal
+Yes. It's regular Fedora, so install them the way their vendors document for Fedora. Screen sharing works through the desktop portal
 (xdg-desktop-portal-wlr).
 
 ## Does it work on multiple monitors?
@@ -49,4 +49,4 @@ pull requests are welcome.
 
 ## What does the name mean?
 
-*Fedora* + *candor*: Latin for radiance or brilliance, and also sincerity and openness.
+See [The name](../introduction/#the-name) in the introduction.

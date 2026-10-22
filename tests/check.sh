@@ -49,14 +49,8 @@ if [ -z "${OMADORA_CHECK_INNER:-}" ]; then
     done < <(find "$ROOT/dotfiles/bin" "$ROOT/steps" "$ROOT/tests" "$ROOT/firefox" "$QS_DIR/scripts" \
                  -type f \( -perm -u+x -o -name '*.sh' -o -name '*.py' \) -print0 2>/dev/null)
     [ $bad -eq 0 ] && pass "scripts parse"
-    bash -n "$ROOT/bootstrap.sh" "$ROOT/atomic/build.sh" "$ROOT/atomic/user-setup.sh" 2>/dev/null \
-        && pass "bootstrap and image scripts parse" || fail "shell syntax: bootstrap.sh or atomic/*.sh"
-
-    # The image builds omadora-phone with the Go version phone/go.mod asks for.
-    gomod=$(sed -n 's/^go //p' "$ROOT/phone/go.mod")
-    goimg=$(sed -n 's/^ARG GO_VERSION=//p' "$ROOT/atomic/Containerfile")
-    [ "$gomod" = "$goimg" ] && pass "image Go version ($goimg)" \
-        || fail "atomic/Containerfile GO_VERSION=$goimg, phone/go.mod says go $gomod"
+    bash -n "$ROOT/bootstrap.sh" "$ROOT/install.sh" 2>/dev/null \
+        && pass "bootstrap and installer parse" || fail "shell syntax: bootstrap.sh or install.sh"
 
     if out=$(sway -C -c "$ROOT/dotfiles/sway/.config/sway/config" 2>&1 | grep -i 'error' ); then
         fail "sway config:"; echo "$out" | sed 's/^/    /'

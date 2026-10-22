@@ -1,18 +1,14 @@
 #!/usr/bin/python3 -I
 """omadora-update: system update status for the shell's Updates panel.
 
-    omadora-update status [--check]   JSON status (--check asks the server)
-    omadora-update upgrade            atomic: download and stage the update
-    omadora-update rollback           atomic: boot the previous image next time
+    omadora-update status [--check]   JSON status (--check counts pending updates)
 
-On the signed image (Fedora Atomic / bootc), updates are whole images: they're
-staged in the background (rpm-ostreed-automatic) and applied on restart, and
-the previous image stays one restart away. On a regular Fedora install, the
-shell runs `sudo dnf upgrade` / `sudo dnf history undo last` in a terminal
-instead, so you see and confirm what changes.
+Security updates install automatically (dnf5-automatic, steps/20). For the
+rest, the shell runs `sudo dnf upgrade` / `sudo dnf history undo last` in a
+terminal, so you see and confirm what changes.
 
-Status JSON: {"kind": "atomic"|"dnf", "current": {...}, "staged": {...}|null,
-"rollback": {...}|null, "updates": int|null, "checked": epoch|null, "error": str}
+Status JSON: {"current": {"version", "time"}, "updates": int|null,
+"checked": epoch|null, "error": str}
 """
 
 import json
@@ -32,10 +28,6 @@ def run(cmd, timeout=300):
         return p.returncode, p.stdout, p.stderr
     except (OSError, subprocess.TimeoutExpired) as e:
         return 1, "", str(e)
-
-
-def atomic():
-    return Path("/run/ostree-booted").exists()
 
 
 def os_release():
@@ -63,45 +55,6 @@ def save_cache(data):
     tmp.replace(CACHE)
 
 
-# ---------------------------------------------------------------- atomic ----
-
-def deployment(d):
-    image = d.get("container-image-reference") or d.get("origin") or ""
-    return {
-        "version": d.get("version") or d.get("checksum", "")[:12],
-        "time": d.get("timestamp"),
-        "image": image.split(":", 2)[-1] if image else "",
-    }
-
-
-def atomic_status(check):
-    code, out, err = run(["rpm-ostree", "status", "--json"], timeout=60)
-    if code != 0:
-        return {"kind": "atomic", "error": err.strip() or "rpm-ostree status failed"}
-    deps = json.loads(out).get("deployments", [])
-    booted = next((d for d in deps if d.get("booted")), None)
-    staged = next((d for d in deps if d.get("staged")), None)
-    rollback = next((d for d in deps if not d.get("booted") and not d.get("staged")), None)
-    cache = load_cache()
-    if check:
-        code, out, err = run(["rpm-ostree", "upgrade", "--check"])
-        # 77: nothing new
-        cache = {"updates": 1 if code == 0 and "AvailableUpdate" in out else 0, "checked": int(time.time())}
-        if code not in (0, 77):
-            cache["error"] = (err or out).strip().splitlines()[-1:] or ["check failed"]
-            cache["error"] = cache["error"][0]
-        save_cache(cache)
-    return {
-        "kind": "atomic",
-        "current": deployment(booted) if booted else None,
-        "staged": deployment(staged) if staged else None,
-        "rollback": deployment(rollback) if rollback else None,
-        "updates": cache.get("updates"),
-        "checked": cache.get("checked"),
-        "error": cache.get("error", ""),
-    }
-
-
 # ------------------------------------------------------------------- dnf ----
 
 def last_update_time():
@@ -123,10 +76,7 @@ def dnf_status(check):
             cache = {"updates": None, "checked": int(time.time()), "error": (err.strip().splitlines() or ["check failed"])[-1]}
         save_cache(cache)
     return {
-        "kind": "dnf",
-        "current": {"version": rel.get("PRETTY_NAME", "Fedora"), "time": last_update_time(), "image": ""},
-        "staged": None,
-        "rollback": None,
+        "current": {"version": rel.get("PRETTY_NAME", "Fedora"), "time": last_update_time()},
         "updates": cache.get("updates"),
         "checked": cache.get("checked"),
         "error": cache.get("error", ""),
@@ -138,12 +88,7 @@ def main():
     cmd = args[0] if args else "status"
     if cmd == "status":
         check = "--check" in args
-        print(json.dumps(atomic_status(check) if atomic() else dnf_status(check)))
-    elif cmd in ("upgrade", "rollback"):
-        if not atomic():
-            sys.exit("omadora-update: on a regular install, run `sudo dnf upgrade` (the Updates panel opens it in a terminal)")
-        code = subprocess.call(["rpm-ostree", cmd])
-        sys.exit(code)
+        print(json.dumps(dnf_status(check)))
     elif cmd in ("-h", "--help"):
         print(__doc__.strip())
     else:

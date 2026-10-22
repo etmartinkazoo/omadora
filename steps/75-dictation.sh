@@ -26,11 +26,7 @@ for cmd in wtype pw-record; do
     command -v "$cmd" >/dev/null 2>&1 || die "missing command: $cmd (install the packages first: Dictation settings → Install, or the system-packages step)"
 done
 
-# The Atomic image ships whisper-cli prebuilt (atomic/Containerfile); a local
-# build in ~/.local/bin, when there is one, takes precedence.
-if [ -x /usr/bin/whisper-cli ] && [ ! -x "$HOME/.local/bin/whisper-cli" ]; then
-    ok "whisper-cli comes with the omadora image"
-elif [ ! -f "$STAMP" ] || [ ! -x "$HOME/.local/bin/whisper-cli" ]; then
+if [ ! -f "$STAMP" ] || [ ! -x "$HOME/.local/bin/whisper-cli" ]; then
     for cmd in git cmake g++; do
         command -v "$cmd" >/dev/null 2>&1 || die "missing command: $cmd (install the packages first: Dictation settings → Install, or the system-packages step)"
     done

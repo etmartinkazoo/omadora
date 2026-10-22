@@ -29,7 +29,7 @@ input "type:keyboard" {
 
 ## My apps
 # Email
-bindsym $mod+Shift+i exec flatpak run org.mozilla.Thunderbird
+bindsym $mod+Shift+i exec thunderbird
 ```
 
 Apply it with <kbd>Super</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd> (reload sway). New bindings show up in the
@@ -50,15 +50,12 @@ dotfiles/quickshell/  the shell (QML)
 dotfiles/bin/         helper scripts
 ```
 
-To make deeper changes, clone it and link from your checkout:
+The installer already put a checkout in `~/omadora`, and your config files are symlinks into it.
+Edit them there, and the shell reloads live. To re-link after changing the layout of the repository:
 
 ```bash
-git clone https://github.com/etmartinkazoo/omadora ~/omadora
 cd ~/omadora && ./install.sh --user-only dotfiles session
 ```
-
-Your config files are then symlinks into `~/omadora`. Edit them, and the shell reloads live.
-On Atomic, the login setup sees your checkout and leaves your links alone.
 
 ## What not to edit
 

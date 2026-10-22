@@ -28,8 +28,9 @@ Check the keyboard layout and Caps Lock first. If the lock screen itself is brok
 
 ## An update broke something
 
-On Atomic, boot the previous image: choose it in the boot menu, or run
-`rpm-ostree rollback && systemctl reboot`. Then please
+If a Fedora package update is the cause, undo it with `sudo dnf history undo last` (or pick an
+older kernel in the boot menu if the machine won't start). If it came from omadora itself, your
+previous files are in `~/.local/state/omadora/backup-*`. Then please
 [open an issue](https://github.com/etmartinkazoo/omadora/issues).
 
 ## A Bluetooth device won't pair
@@ -53,6 +54,6 @@ Forget the network (select it and press <kbd>F</kbd>), then connect again. Netwo
 ```bash
 fc-list | grep -i 0xproto                         # the font is installed
 gsettings get org.gnome.desktop.interface icon-theme
-cd ~/omadora && ./install.sh fonts icons        # Workstation: reinstall them
+cd ~/omadora && ./install.sh fonts icons        # reinstall them
 omadora-theme refresh                           # re-apply the theme everywhere
 ```

@@ -6,6 +6,5 @@ export function url(path = ''): string {
 }
 
 export const REPO = 'https://github.com/etmartinkazoo/omadora';
-export const IMAGE = 'ghcr.io/etmartinkazoo/omadora';
 
 export const SECTIONS = ['Start here', 'Using omadora', 'Running it', 'Reference'] as const;

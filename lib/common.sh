@@ -19,11 +19,6 @@ need_cmd() {
     command -v "$1" >/dev/null 2>&1 || die "missing command: $1 (run the system-packages step first)"
 }
 
-# True on rpm-ostree based systems (Fedora Atomic / bootc images).
-is_atomic() {
-    [ -e /run/ostree-booted ]
-}
-
 # Run a command as root, prompting via sudo when needed.
 as_root() {
     if [ "$(id -u)" -eq 0 ]; then
@@ -43,8 +38,7 @@ download_verified() {
     echo "$sha  $out" | sha256sum -c --quiet - || die "checksum mismatch for $url"
 }
 
-# Package list without comments/blank lines: packages/fedora.txt, or the
-# named list (e.g. `package_list build`).
+# Package list without comments/blank lines.
 package_list() {
-    grep -Ev '^\s*(#|$)' "$OMADORA_ROOT/packages/${1:-fedora}.txt" | awk '{print $1}'
+    grep -Ev '^\s*(#|$)' "$OMADORA_ROOT/packages/fedora.txt" | awk '{print $1}'
 }

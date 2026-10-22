@@ -154,8 +154,6 @@ Scope {
                         text: settings.info === null ? "Checking…"
                             : settings.gpuMissing ? "✓ whisper.cpp installed · GPU acceleration off: install " + settings.info.missingPackages.join(", ") + " to make it faster"
                             : settings.ready ? "✓ whisper.cpp installed · GPU acceleration " + (settings.info.gpu ? "on" : "off")
-                            : settings.info.atomic && settings.info.missingPackages.length > 0
-                                ? "Needs packages: " + settings.info.missingPackages.join(" ") + ". On Fedora Atomic, add them with rpm-ostree and reboot, then Install."
                             : settings.info.missingPackages.length > 0
                                 ? "Needs a few packages (" + settings.info.missingPackages.join(", ") + ") and a one-time build of the speech engine (a few minutes)."
                             : "The speech engine needs a one-time build (a few minutes)."

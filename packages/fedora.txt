@@ -1,5 +1,4 @@
 # Packages omadora needs on Fedora (Workstation/Server/Everything installs).
-# On Fedora Atomic these are baked into the image instead (see atomic/).
 
 # Compositor & session
 sway
@@ -50,7 +49,7 @@ unzip
 fontconfig
 glib2                    # gsettings
 
-# Dictation (whisper-cli comes with the Atomic image; packages/build.txt builds it elsewhere)
+# Dictation (steps/75-dictation.sh builds whisper.cpp)
 wtype                    # types the transcribed text into the focused window
 vulkan-loader            # whisper.cpp on the GPU (Vulkan)
 mesa-vulkan-drivers
@@ -74,3 +73,12 @@ fprintd-pam              # fingerprint for the lock screen and admin prompts
 # omadora-migrate
 rsync
 openssh-clients
+
+# Build tools: the phone daemon (steps/70-phone.sh) and whisper.cpp (steps/75-dictation.sh)
+golang
+gcc-c++
+cmake
+vulkan-headers           # whisper.cpp on the GPU (Vulkan)
+vulkan-loader-devel
+glslc
+spirv-headers-devel

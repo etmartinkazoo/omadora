@@ -1,66 +1,46 @@
 ---
 title: For teams
-description: Rolling omadora out across a business, from a two-person office to a fleet.
+description: Setting up omadora across a business, from a two-person office to a fleet.
 section: Running it
 order: 4
 ---
 
 The same properties that make omadora calm for one person make it manageable for many: every
-machine runs **the same signed image**, updates are atomic, and any machine can roll back in one
-reboot.
+machine is set up by the same script from the same repository, so laptops installed months apart
+end up the same.
 
 ## Why it works for organizations
 
-- **Identical machines.** The image is the configuration. There's no drift between laptops set
-  up months apart.
-- **Safe updates.** A bad update costs one reboot to undo, not a day of reinstalling.
+- **Identical machines.** The repository is the configuration. Everyone runs the same installer.
 - **Low support load.** Employees get a consistent desktop with a built-in cheatsheet
-  (<kbd>Super</kbd>+<kbd>/</kbd>), and no system settings to break.
-- **Security by default.** Encryption, automatic patches, firewall, deny-by-default Bluetooth.
-  See [Security](../security/).
+  (<kbd>Super</kbd>+<kbd>/</kbd>).
+- **Security by default.** Encryption, automatic security updates, firewall, deny-by-default
+  Bluetooth. See [Security](../security/).
 
 ## Rolling out
 
-1. **Pick a channel.** Most teams should follow the `:45` tag: security fixes daily, Fedora
-   release upgrades only when you decide.
-2. **Pilot first.** Put one or two machines on a dated build (`:45-YYYYMMDD`), use them for a
-   week, then move everyone to that tag.
-3. **Install.** Fedora Sway Atomic with encryption → rebase to the image → reboot. See
-   [Install on Fedora Atomic](../install-atomic/).
-4. **Hand over.** The employee logs in, and the desktop configures itself on first login.
+1. **Pick a repository.** Use omadora's own, or fork it to add your company's packages and
+   settings.
+2. **Install Fedora 45** on each machine, with disk encryption.
+3. **Run the installer** from that repository. See [Install](../install/). With a fork, clone
+   your fork instead of omadora's.
+4. **Customize per machine** in `~/.config/sway/config.d/80-local.conf` (displays, keyboard
+   layout, extra bindings). Updates never touch it. See [Customizing](../customizing/).
 
-## Your own company image
+## Keeping machines in sync
 
-For company-specific software, certificates, VPN profiles or settings, build a thin image on
-top of omadora. You keep all of its updates, plus your own layer:
-
-```dockerfile
-# Containerfile in your company's repository
-FROM ghcr.io/etmartinkazoo/omadora:45
-
-# Company packages
-RUN dnf5 -y install openconnect && dnf5 clean all
-
-# Internal CA certificate
-COPY company-ca.pem /etc/pki/ca-trust/source/anchors/
-RUN update-ca-trust
-
-# Default Flatpaks, wallpaper, etc. go here too
+```bash
+cd ~/omadora && git pull && ./install.sh
 ```
 
-Build it in CI (omadora's own `.github/workflows/build-image.yml` is a working template),
-sign it with your own key, and point your machines at it with `rpm-ostree rebase`.
-
-For bare-metal installs or VMs without a manual setup step,
-[bootc-image-builder](https://github.com/osbuild/bootc-image-builder) turns any of these images
-into an installer ISO or a disk image.
+The installer is idempotent, so running it on every machine after a change is safe. Fedora's
+security updates install automatically; other package updates go through `sudo dnf upgrade`.
+See [Updates](../updates/).
 
 ## Day-to-day administration
 
 | Task | Command |
 |------|---------|
-| What is this machine running? | `rpm-ostree status` |
-| Is an update staged? | `rpm-ostree status` (look for a "staged" deployment) |
-| Undo the last update | `rpm-ostree rollback && systemctl reboot` |
-| Move to a new build | `rpm-ostree rebase ostree-image-signed:docker://<image>:<tag>` |
+| Which omadora version is this? | `git -C ~/omadora log -1 --oneline` |
+| Undo the last package update | `sudo dnf history undo last` |
 | Shell logs for a support ticket | `journalctl --user -u quickshell --since today` |

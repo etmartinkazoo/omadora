@@ -31,8 +31,7 @@ if [ -n "${SWAYSOCK:-}" ] && command -v swaymsg >/dev/null 2>&1; then
     if ! systemctl --user is-active --quiet quickshell.service; then
         qs kill >/dev/null 2>&1 || true
     fi
-    # --no-block: this step also runs from omadora-setup.service, which is
-    # ordered before quickshell.service; waiting here would deadlock.
+    # --no-block: the installer doesn't need to wait for the shell to start.
     systemctl --user --no-block restart quickshell.service
     ok "session updated"
 else

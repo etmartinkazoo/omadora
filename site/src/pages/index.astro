@@ -1,14 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
-import Logo from '../components/Logo.astro';
 import DesktopPreview from '../components/DesktopPreview.astro';
-import { url, REPO, IMAGE } from '../lib';
+import { url, REPO } from '../lib';
 
 const layers = [
 	{
-		name: 'Fedora Atomic',
+		name: 'Fedora',
 		gives: 'Stability & security',
-		text: 'The OS is a signed image. Updates apply whole or not at all, and the last version is one reboot away.',
+		text: 'Fixed releases, SELinux enforcing, and security updates that install themselves.',
 	},
 	{
 		name: 'sway',
@@ -24,7 +23,7 @@ const layers = [
 
 const audiences = [
 	{ who: 'Business owners', what: 'Machines that stay up, stay patched and stay out of the way. Your team works; nobody babysits computers.' },
-	{ who: 'Admins', what: 'One signed image for every laptop. Pin it, pilot it, roll it out, and roll it back in one reboot.' },
+	{ who: 'Admins', what: 'One repository sets up every laptop the same way. Fork it, customize it, and keep everyone in sync with git pull.' },
 	{ who: 'Employees', what: 'A fast, calm desktop that looks the same every morning, with a cheatsheet one keystroke away.' },
 	{ who: 'Power users', what: 'Every action a keystroke away. Tiling, a launcher with a calculator, clipboard history, scriptable everything.' },
 ];
@@ -47,7 +46,7 @@ const features = [
 const security = [
 	'Full-disk encryption and Secure Boot',
 	'SELinux enforcing',
-	'Read-only, signed OS image',
+	'Packages from Fedora\'s signed repositories',
 	'Automatic daily security updates',
 	'Firewall on, ssh closed',
 	'Deny-by-default Bluetooth pairing',
@@ -56,18 +55,18 @@ const security = [
 ];
 ---
 
-<Base title="omadora" description="A stable, secure and beautiful desktop for people who get things done: Fedora Atomic, sway and Quickshell, with no compromises.">
+<Base title="omadora" description="A stable, secure and beautiful desktop for people who get things done: Fedora, sway and Quickshell, with no compromises.">
 	<section class="hero">
 		<div class="container hero-grid">
 			<div class="hero-copy">
-				<p class="eyebrow">Fedora Atomic · sway · Quickshell</p>
+				<p class="eyebrow">Fedora · sway · Quickshell</p>
 				<h1>Stable. Secure. Beautiful.<br /><span class="spark-text">No compromises.</span></h1>
 				<p class="lede">
-					omadora is a desktop for people whose computer is a tool for work. An operating system that can't
-					break, a workflow built for speed, and a shell that's a pleasure to look at, all in one signed image.
+					omadora is a desktop for people whose computer is a tool for work. A conservative, fixed-release
+					operating system, a workflow built for speed, and a shell that's a pleasure to look at, set up by one script.
 				</p>
 				<div class="ctas">
-					<a class="btn btn-primary" href={url('docs/install-atomic/')}>Get started →</a>
+					<a class="btn btn-primary" href={url('docs/install/')}>Get started →</a>
 					<a class="btn" href={url('docs/introduction/')}>Read the docs</a>
 				</div>
 			</div>
@@ -109,10 +108,10 @@ const security = [
 			<div class="compare-col highlight">
 				<p class="compare-head">With omadora</p>
 				<ul>
-					<li>Fedora's fixed releases, applied as atomic images</li>
+					<li>Fedora's fixed releases, with security updates applied automatically</li>
 					<li>Encrypted, patched and firewalled by default</li>
 					<li>One shell, one theme, one source of truth</li>
-					<li>Roll back with a single reboot</li>
+					<li>Undo an update with one command</li>
 				</ul>
 			</div>
 		</div>
@@ -168,37 +167,24 @@ const security = [
 
 	<section class="container section" aria-labelledby="install-title">
 		<p class="eyebrow">Install</p>
-		<h2 id="install-title">Two reboots to a new desktop.</h2>
+		<h2 id="install-title">One command to a new desktop.</h2>
 		<div class="install">
 			<div class="install-card">
-				<h3>Fedora Atomic <span class="badge">recommended</span></h3>
-				<p>Install Fedora Sway Atomic with disk encryption, then rebase:</p>
-				<pre><code>rpm-ostree rebase ostree-unverified-registry:{IMAGE}:latest
-systemctl reboot
-rpm-ostree rebase ostree-image-signed:docker://{IMAGE}:latest
-systemctl reboot</code></pre>
-				<a href={url('docs/install-atomic/')}>Full instructions →</a>
+				<h3>One command</h3>
+				<p>On Fedora 45 (the Sway spin or any Fedora 45 install), installs git, clones the repository and runs the installer:</p>
+				<pre><code>curl -fsSL https://raw.githubusercontent.com/etmartinkazoo/omadora/main/bootstrap.sh | bash</code></pre>
+				<a href={url('docs/install/')}>Full instructions →</a>
 			</div>
 			<div class="install-card">
-				<h3>Fedora Workstation</h3>
-				<p>Already on regular Fedora? One idempotent script:</p>
+				<h3>By hand</h3>
+				<p>The same thing, one step at a time:</p>
 				<pre><code>git clone {REPO} ~/omadora
 cd ~/omadora && ./install.sh</code></pre>
-				<a href={url('docs/install-workstation/')}>Full instructions →</a>
+				<a href={url('docs/install/')}>Full instructions →</a>
 			</div>
 		</div>
 	</section>
 
-	<section class="container section name" aria-labelledby="name-title">
-		<Logo size={72} wordmark={false} />
-		<div>
-			<h2 id="name-title">fed·candor</h2>
-			<p>
-				<em>Fedora</em> + <em>candor</em>, Latin for brilliance and radiance, and for sincerity and openness. A
-				desktop that's a pleasure to look at, and honest about what it does: every line of it is open and auditable.
-			</p>
-		</div>
-	</section>
 </Base>
 
 <style>
@@ -506,42 +492,10 @@ cd ~/omadora && ./install.sh</code></pre>
 		font-family: var(--font-mono);
 		font-size: 14px;
 	}
-	.badge {
-		font-size: 11px;
-		font-weight: 400;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		color: var(--spark);
-		background: var(--accent-bg);
-		border: 1px solid var(--accent);
-		border-radius: 999px;
-		padding: 2px 10px;
-	}
 	@media (max-width: 860px) {
 		.install {
 			grid-template-columns: 1fr;
 		}
 	}
 
-	.name {
-		display: flex;
-		gap: 28px;
-		align-items: center;
-	}
-	.name > div {
-		max-width: 40em;
-	}
-	.name h2 {
-		margin-bottom: 8px;
-	}
-	.name p {
-		color: var(--text-muted);
-		margin: 0;
-	}
-	@media (max-width: 560px) {
-		.name {
-			flex-direction: column;
-			align-items: flex-start;
-		}
-	}
 </style>

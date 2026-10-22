@@ -2,7 +2,7 @@
 # [user] One-time move of a fedcandor install (the old name) over to omadora
 #
 # Moves state, settings, data and cache folders to their omadora names, drops
-# links into the old checkout or image copy (the dotfiles step relinks them),
+# links into the old checkout (the dotfiles step relinks them),
 # retires the old phone service and build, points nvim at the renamed
 # colorscheme, and moves a ~/fedcandor checkout to ~/omadora. Does nothing on
 # an install that never had the old name.
@@ -70,7 +70,7 @@ if [ -d "$HOME/omadora/.git" ]; then
     esac
 fi
 
-# --- Links into the old dotfiles (checkout or image copy) -----------------------
+# --- Links into the old dotfiles ------------------------------------------------
 n=$(find "$HOME/.config" "$HOME/.local" -type l -lname "*$OLD/dotfiles/*" 2>/dev/null | wc -l)
 if [ "$n" -gt 0 ]; then
     find "$HOME/.config" "$HOME/.local" -type l -lname "*$OLD/dotfiles/*" -delete 2>/dev/null

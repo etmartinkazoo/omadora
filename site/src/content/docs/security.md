@@ -16,19 +16,14 @@ can verify each one yourself.
 | **Full-disk encryption (LUKS)**, chosen at install | Data theft from a lost or stolen machine |
 | **Secure Boot** (you enable it in firmware) | Tampered bootloaders and kernels |
 | **SELinux, enforcing** (Fedora default) | A compromised service reaching beyond its role |
-| **Read-only system image** (Atomic) | Malware or mistakes modifying the OS in place |
-| **Signed images, verified on update** (Atomic) | A hijacked registry or network serving you a malicious OS |
 | **Firewall on, ssh closed** | Network services you didn't mean to expose |
 
 ## Updates
 
 Unpatched software is the most common way in, so updates are automatic:
 
-- **Atomic:** a new image is downloaded and staged in the background and applied at your next
-  reboot. CI rebuilds the image daily, so Fedora's security fixes reach you within a day of release.
-- **Workstation:** `dnf5-automatic` installs security updates on its own.
-
-Neither ever reboots on its own. See [Updates & rollback](../updates/).
+`dnf5-automatic` installs Fedora's security updates on its own, and never reboots on its own.
+Other updates are yours to apply with `sudo dnf upgrade`. See [Updates](../updates/).
 
 ## The desktop
 
@@ -57,13 +52,12 @@ stored. It lives on your encrypted disk; clear it any time with **Clear All** or
 ### Apps and privileges
 
 - Administrator prompts come from polkit, through the shell's dialog; nothing in the desktop runs as root.
-- On Atomic, desktop apps install as Flatpaks, which are sandboxed.
 - Wi-Fi passwords are passed to NetworkManager over a pipe, never on a command line that other
   processes could read.
 
 ## Supply chain
 
-- The OS image is built in public CI from this repository, and signed.
+- System packages come from Fedora's signed repositories, installed with dnf.
 - Fonts and icons are downloaded at pinned versions and **verified by SHA-256** before install.
 - CI actions are pinned to commit hashes, not tags that could be moved.
 - Everything is plain text in one git repository, so anyone can audit it.
@@ -75,7 +69,7 @@ Be clear about these:
 - It doesn't replace backups. Keep them, and keep them off the machine.
 - It isn't an endpoint management (MDM) or antivirus product.
 - Secure Boot and full-disk encryption depend on choices you make at install time.
-- Third-party repositories and Flatpaks are only as trustworthy as their publishers.
+- Third-party repositories and apps are only as trustworthy as their publishers.
 
 ## Verify it yourself
 
@@ -84,6 +78,6 @@ getenforce                             # Enforcing
 mokutil --sb-state                     # SecureBoot enabled
 lsblk -o NAME,TYPE,MOUNTPOINTS         # a "crypt" device under /
 sudo firewall-cmd --list-services      # no ssh unless you need it
-rpm-ostree status                      # Atomic: signed omadora image
+systemctl is-enabled dnf5-automatic.timer   # enabled
 bluetoothctl show | grep Pairable      # "no" unless the Bluetooth menu is open
 ```

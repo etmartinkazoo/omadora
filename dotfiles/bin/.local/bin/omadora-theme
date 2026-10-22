@@ -56,14 +56,14 @@ def warn(msg):
 
 
 def repo_root():
-    """The omadora checkout (via this script's symlink) or the Atomic image copy."""
+    """The omadora checkout (via this script's symlink)."""
     env = os.environ.get("OMADORA_ROOT")
     if env:
         return Path(env)
     for parent in Path(__file__).resolve().parents:
         if (parent / "themes").is_dir() and (parent / "templates").is_dir():
             return parent
-    return Path("/usr/share/omadora")
+    return Path.home() / "omadora"
 
 
 ROOT = repo_root()

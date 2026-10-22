@@ -43,11 +43,7 @@ HOME = Path.home()
 RUN = Path(os.environ.get("XDG_RUNTIME_DIR") or f"/tmp/omadora-{os.getuid()}") / "omadora-dictate"
 DATA = Path(os.environ.get("XDG_DATA_HOME") or HOME / ".local/share") / "omadora/whisper"
 CONFIG = Path(os.environ.get("XDG_CONFIG_HOME") or HOME / ".config") / "omadora/dictation.conf"
-# A local build (steps/75-dictation.sh) wins over the one the Atomic image ships.
-LOCAL_WHISPER = HOME / ".local/bin/whisper-cli"
-IMAGE_WHISPER = Path("/usr/bin/whisper-cli")
-WHISPER = LOCAL_WHISPER if LOCAL_WHISPER.exists() or not IMAGE_WHISPER.exists() else IMAGE_WHISPER
-BUILD_INFO = DATA / "build-info" if WHISPER == LOCAL_WHISPER else Path("/usr/share/omadora/whisper-build-info")
+WHISPER = HOME / ".local/bin/whisper-cli"
 
 AUDIO = RUN / "speech.wav"
 PID = RUN / "recorder.pid"
@@ -57,8 +53,6 @@ LOCK = RUN / "lock"
 LEVEL = RUN / "level"          # microphone level 0..1, ~20 times a second (the pill's meter)
 
 PACKAGES = ["wtype", "gcc-c++", "cmake", "git", "vulkan-headers", "vulkan-loader-devel", "glslc", "spirv-headers-devel"]
-if WHISPER == IMAGE_WHISPER:
-    PACKAGES = ["wtype"]  # nothing to build
 # name -> (sha256, bytes, description)
 MODELS = {
     "base.en": ("a03779c86df3323075f5e796cb2ce5029f00ec8869eee3fdfb897afe36c6d002", 147964211,
@@ -318,7 +312,7 @@ def repo_root():
     for parent in Path(__file__).resolve().parents:
         if (parent / "steps").is_dir() and (parent / "install.sh").is_file():
             return parent
-    return Path("/usr/share/omadora")
+    return HOME / "omadora"
 
 
 def have(cmd):
@@ -334,7 +328,7 @@ def status():
     c = config()
     info = {}
     try:
-        info = dict(l.split("=", 1) for l in BUILD_INFO.read_text().split() if "=" in l)
+        info = dict(l.split("=", 1) for l in (DATA / "build-info").read_text().split() if "=" in l)
     except OSError:
         pass
     models = {}
@@ -343,7 +337,6 @@ def status():
         models[name] = {"present": f.is_file(), "size": size, "description": desc,
                         "multilingual": not name.endswith(".en")}
     print(json.dumps({
-        "atomic": Path("/run/ostree-booted").exists(),
         "missingPackages": missing_packages(),
         "whisper": WHISPER.exists(),
         "gpu": info.get("vulkan") == "ON",
@@ -362,9 +355,6 @@ def install():
     """Packages (one pkexec prompt), then build whisper.cpp and fetch the model."""
     missing = missing_packages()
     if missing:
-        if Path("/run/ostree-booted").exists():
-            print(f"Fedora Atomic: install with rpm-ostree install {' '.join(missing)}, then reboot", flush=True)
-            return 1
         print("Installing " + " ".join(missing) + " (asks for your password)…", flush=True)
         r = subprocess.run(["pkexec", "dnf", "install", "-y", *missing])
         if r.returncode != 0:

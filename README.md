@@ -3,10 +3,10 @@
 # omadora
 
 **Stable. Secure. Beautiful. No compromises.** A desktop for people who want to get things done:
+Fedora 45 for stability and security, sway for productivity, and Quickshell for beauty.
 
-*Formerly **fedcandor**. Existing installs move over by themselves: re-run `./install.sh`
-(regular Fedora), or just update (Atomic) — see [Renamed from fedcandor](#renamed-from-fedcandor).*
-Fedora Atomic for stability and security, sway for productivity, and Quickshell for beauty.
+*Formerly **fedcandor**: re-running `./install.sh` moves an existing install over
+(see [Renamed from fedcandor](#renamed-from-fedcandor)).*
 
 **Website & docs: <https://etmartinkazoo.github.io/omadora/>**
 
@@ -15,10 +15,16 @@ Fedora Atomic for stability and security, sway for productivity, and Quickshell 
 - **Quickshell**: one themed shell providing the bar, launcher (with calculator), notifications,
   clipboard history, screenshots and screen recording, Wi-Fi, Bluetooth, audio mixer, battery
   and power profiles, night light, lock screen, polkit dialog, system tray and a keybind cheatsheet.
-- **Fedora Atomic image** (`atomic/`): the whole desktop as a signed, bootable image.
-  Updates apply atomically, and the previous version is always one reboot away.
 
-## Install (Fedora Workstation, Server or Everything)
+## Install (Fedora 45: the Sway spin, Workstation, Server or Everything)
+
+One command on a fresh install (installs git, clones to `~/omadora`, runs `./install.sh`):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/etmartinkazoo/omadora/main/bootstrap.sh | bash
+```
+
+Or by hand:
 
 ```bash
 git clone https://github.com/etmartinkazoo/omadora ~/omadora
@@ -26,39 +32,37 @@ cd ~/omadora
 ./install.sh
 ```
 
+Fedora Atomic isn't supported. Bring your settings, speech models, Firefox profile and keys over
+from another machine with `omadora-migrate you@old-laptop` (`--dry-run` first).
+
 | Step              | Runs as | What it does |
 |-------------------|---------|--------------|
-| `system-packages` | sudo    | `dnf install` everything in `packages/fedora.txt` and `packages/build.txt` |
+| `rename`          | user    | one time: moves a fedcandor install over to the omadora names (see below) |
+| `system-packages` | sudo    | `dnf install` everything in `packages/fedora.txt` |
 | `system-security` | sudo    | automatic security updates, closes unused ssh in the firewall, reports SELinux/Secure Boot/LUKS status |
 | `firefox`         | sudo    | installs the omadora Theme extension system-wide (the one place Fedora's Firefox runs an unsigned add-on), so Firefox follows theme switches live |
 | `fonts`           | user    | 0xProto Nerd Font from its GitHub release (pinned version, SHA-256 verified) |
 | `icons`           | user    | Tela icon theme from its GitHub release (pinned version, SHA-256 verified) |
 | `dotfiles`        | user    | links `dotfiles/*` into `$HOME` with GNU stow (`--no-folding`); anything in the way goes to `~/.local/state/omadora/backup-*` |
 | `session`         | user    | enables `quickshell.service`, reloads sway |
+| `phone`           | user    | builds `omadora-phone` (texts and calls) and enables its service |
+| `dictation`       | user    | builds whisper.cpp and fetches the speech model |
 
 `./install.sh --list` shows the steps. `./install.sh fonts icons` runs just those, and
 `./install.sh --user-only` skips the sudo steps. Every step is idempotent, so re-running is how you update.
-
-For **Fedora Atomic** (one command on a fresh install), see [atomic/README.md](atomic/README.md):
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/etmartinkazoo/omadora/main/bootstrap.sh | bash
-```
 
 ## Layout
 
 ```
 install.sh           entry point
-bootstrap.sh         fresh Fedora Atomic -> omadora (rebase onto the image, clone the repo)
+bootstrap.sh         fresh Fedora 45 -> omadora (installs git, clones, runs install.sh)
 lib/common.sh        shared helpers (logging, verified downloads)
 steps/NN-*.sh        install steps, run in order
 themes/              built-in themes (Omarchy-compatible colors.toml + wallpapers)
 templates/           theme templates: rendered for Quickshell, sway, foot, GTK, Firefox
 firefox/             Firefox theme extension + its native messaging host (live theme switching)
-packages/fedora.txt  dnf package list (also used by the Atomic image)
-packages/build.txt   build tools for omadora-phone and whisper.cpp (not in the image)
+packages/fedora.txt  dnf package list
 dotfiles/<pkg>/      stow packages: sway, quickshell, foot, swappy, autostart, systemd, bin
-atomic/              bootc image: Containerfile, build script, first-login setup
 site/                website and docs (Astro); deployed to GitHub Pages
 ```
 
@@ -106,6 +110,4 @@ each commit that touches the desktop.
 omadora used to be called fedcandor. The `rename` install step (`steps/05-rename.sh`) moves an
 existing install over once: `~/.local/state`, `~/.config`, `~/.local/share` and `~/.cache`
 folders, the `~/fedcandor` checkout (to `~/omadora`, with its `origin` updated), the dotfile
-links, the phone service, and nvim's colorscheme name. On Atomic, `omadora-rename-image.service`
-rebases machines still on `ghcr.io/etmartinkazoo/fedcandor` onto `.../omadora`; CI keeps
-publishing the old name until they've moved.
+links, the phone service, and nvim's colorscheme name.

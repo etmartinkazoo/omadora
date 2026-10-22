@@ -7,9 +7,7 @@ StartLimitBurst=10
 
 [Service]
 Type=simple
-# A build from a ~/omadora checkout (steps/70-phone.sh) wins over the image's.
-ExecSearchPath=%h/.local/bin:/usr/local/bin:/usr/bin
-ExecStart=omadora-phone daemon
+ExecStart=%h/.local/bin/omadora-phone daemon
 Restart=on-failure
 RestartSec=5
 
